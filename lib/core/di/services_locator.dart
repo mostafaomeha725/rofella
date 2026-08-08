@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop/core/cache/preferences_storage.dart';
 import 'package:shop/core/network/network_service.dart';
 import 'package:shop/features/admin/data/services/firebase_service.dart';
+import 'package:shop/features/admin/data/services/image_compression_service.dart';
+import 'package:shop/features/admin/data/services/cloudinary_service.dart';
 import 'package:shop/features/home/data/services/category_cache_service.dart';
 import 'package:shop/features/home/presentation/manager/home_cubit.dart';
 import 'package:shop/features/search/presentation/manager/search_cubit.dart';
@@ -26,7 +28,9 @@ class ServiceLocator {
   void _initFirebase() {
     sl.registerLazySingleton(() => FirebaseService());
     sl.registerLazySingleton(() => CategoryCacheService());
-    sl.registerFactory(() => HomeCubit(
+    sl.registerLazySingleton(() => ImageCompressionService());
+    sl.registerLazySingleton(() => CloudinaryService());
+    sl.registerLazySingleton(() => HomeCubit(
           firebaseService: sl(),
           cacheService: sl(),
         ));

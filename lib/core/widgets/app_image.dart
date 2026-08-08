@@ -49,23 +49,49 @@ class _AppImageState extends State<AppImage> {
     }
   }
 
+  String _getOptimizedUrl(String url, double? width) {
+    if (!url.contains('res.cloudinary.com')) return url;
+    if (url.contains('f_auto') || url.contains('q_auto')) return url;
+
+    try {
+      final uri = Uri.parse(url);
+      final pathSegments = List<String>.from(uri.pathSegments);
+      final uploadIndex = pathSegments.indexOf('upload');
+      
+      if (uploadIndex != -1) {
+        String transform = 'f_auto,q_auto,c_fill,dpr_auto';
+        if (width != null && width.isFinite) {
+          transform += ',w_${(width * 2).toInt()}';
+        }
+        pathSegments.insert(uploadIndex + 1, transform);
+        return uri.replace(pathSegments: pathSegments).toString();
+      }
+    } catch (e) {
+      return url;
+    }
+    return url;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final optimizedUrl = _getOptimizedUrl(widget.imageUrl, widget.width);
+    final cacheWidth = widget.useMemCache
+            ? (widget.width != null && widget.width!.isFinite
+                  ? (widget.width! * 2).toInt()
+                  : 800)
+            : null;
+
     return ClipRRect(
       borderRadius: widget.borderRadius ?? BorderRadius.zero,
       child: CachedNetworkImage(
         fit: widget.fit ?? BoxFit.fill,
         width: widget.width,
         height: widget.height,
-        // Compress image in RAM to save memory and keep 50+ images in LRU Cache
-        memCacheWidth: widget.useMemCache
-            ? (widget.width != null && widget.width!.isFinite
-                  ? (widget.width! * 2).toInt()
-                  : 800)
-            : null,
-        imageUrl: widget.imageUrl,
-        cacheKey: _getCacheKey(widget.imageUrl),
-        // Eliminate visual flashing when loading from cache (instant pop-in)
+        filterQuality: FilterQuality.low,
+        memCacheWidth: cacheWidth,
+        maxWidthDiskCache: cacheWidth,
+        imageUrl: optimizedUrl,
+        cacheKey: _getCacheKey(widget.imageUrl), // Keep cacheKey stable using original URL
         fadeInDuration: Duration.zero,
         fadeOutDuration: Duration.zero,
         placeholder: (context, url) {

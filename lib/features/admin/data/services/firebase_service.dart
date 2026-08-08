@@ -43,6 +43,22 @@ class FirebaseService {
     });
   }
 
+  Future<List<CategoryModel>> getCategoriesFuture() async {
+    try {
+      final snapshot = await _firestore
+          .collection(_categoryCollection)
+          .orderBy('createdAt', descending: true)
+          .get(const GetOptions(source: Source.serverAndCache))
+          .timeout(const Duration(seconds: 10));
+      return snapshot.docs
+          .map((doc) => CategoryModel.fromJson(doc.data(), doc.id))
+          .toList();
+    } catch (e) {
+      debugPrint('Firebase Fetch Categories Error: $e');
+      return [];
+    }
+  }
+
   Future<String?> updateCategory(CategoryModel category) async {
     try {
       final updateData = {

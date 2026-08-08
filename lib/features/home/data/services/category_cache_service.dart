@@ -1,20 +1,44 @@
 import 'dart:collection';
+import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shop/features/admin/data/models/product_model.dart';
 import 'package:shop/features/admin/data/services/firebase_service.dart';
 
-class CategorySectionData {
-  List<ProductModel>? products;
-  dynamic lastDocument; 
-  bool hasMore = true;
-  DateTime? lastFetch;
+class CategorySectionData extends ChangeNotifier {
+  List<ProductModel>? _products;
+  dynamic _lastDocument;
+  bool _hasMore = true;
+  DateTime? _lastFetch;
 
   CategorySectionData({
-    this.products,
-    this.lastDocument,
-    this.hasMore = true,
-    this.lastFetch,
-  });
+    List<ProductModel>? products,
+    dynamic lastDocument,
+    bool hasMore = true,
+    DateTime? lastFetch,
+  }) {
+    _products = products;
+    _lastDocument = lastDocument;
+    _hasMore = hasMore;
+    _lastFetch = lastFetch;
+  }
+
+  List<ProductModel>? get products => _products;
+  dynamic get lastDocument => _lastDocument;
+  bool get hasMore => _hasMore;
+  DateTime? get lastFetch => _lastFetch;
+
+  void updateData({
+    List<ProductModel>? products,
+    dynamic lastDocument,
+    bool? hasMore,
+    DateTime? lastFetch,
+  }) {
+    if (products != null) _products = products;
+    if (lastDocument != null) _lastDocument = lastDocument;
+    if (hasMore != null) _hasMore = hasMore;
+    if (lastFetch != null) _lastFetch = lastFetch;
+    notifyListeners();
+  }
 }
 
 class CategoryCacheService {
@@ -22,8 +46,8 @@ class CategoryCacheService {
   final LinkedHashMap<String, CategorySectionData> _cache = LinkedHashMap();
   final Map<String, Future<PaginatedProductsResult>> _activeRequests = {};
   final Map<String, Future<PaginatedProductsResult>> _activeSearchRequests = {};
-  
-  final FirebaseService _firebaseService = FirebaseService(); 
+
+  final FirebaseService _firebaseService = FirebaseService();
 
   CategorySectionData? getCached(String category) {
     if (_cache.containsKey(category)) {
@@ -34,10 +58,14 @@ class CategoryCacheService {
     return null;
   }
 
-  Future<CategorySectionData> fetchCategory(String category, {DocumentSnapshot? startAfter, int limit = 8}) async {
+  Future<CategorySectionData> fetchCategory(
+    String category, {
+    DocumentSnapshot? startAfter,
+    int limit = 8,
+  }) async {
     // Deduplication key based on pagination start point
     final reqKey = '${category}_${startAfter?.id ?? 'start'}';
-    
+
     if (_activeRequests.containsKey(reqKey)) {
       final result = await _activeRequests[reqKey]!;
       return _updateCache(category, result, isLoadMore: startAfter != null);
@@ -58,20 +86,33 @@ class CategoryCacheService {
     }
   }
 
-  CategorySectionData _updateCache(String category, PaginatedProductsResult result, {required bool isLoadMore}) {
+  CategorySectionData _updateCache(
+    String category,
+    PaginatedProductsResult result, {
+    required bool isLoadMore,
+  }) {
     CategorySectionData data = getCached(category) ?? CategorySectionData();
-    
+
     if (isLoadMore) {
       final existingProducts = data.products ?? [];
       // To prevent duplicate adds if deduplication fails for some reason
-      final newProducts = result.products.where((p) => !existingProducts.any((ep) => ep.id == p.id)).toList();
-      data.products = existingProducts..addAll(newProducts);
+      final newProducts = result.products
+          .where((p) => !existingProducts.any((ep) => ep.id == p.id))
+          .toList();
+      data.updateData(
+        products: existingProducts..addAll(newProducts),
+        lastDocument: result.lastDocument,
+        hasMore: result.hasMore,
+        lastFetch: DateTime.now(),
+      );
     } else {
-      data.products = result.products;
+      data.updateData(
+        products: result.products,
+        lastDocument: result.lastDocument,
+        hasMore: result.hasMore,
+        lastFetch: DateTime.now(),
+      );
     }
-    data.lastDocument = result.lastDocument;
-    data.hasMore = result.hasMore;
-    data.lastFetch = DateTime.now();
 
     if (!_cache.containsKey(category)) {
       if (_cache.length >= _cacheLimit) {
@@ -102,15 +143,18 @@ class CategoryCacheService {
       final result = await req;
       final currentData = _cache[category];
       if (currentData != null && currentData.products != null) {
-         final newIds = result.products.map((p) => p.id).join(',');
-         final oldIds = currentData.products!.take(limit).map((p) => p.id).join(',');
-         if (newIds != oldIds) {
-            _updateCache(category, result, isLoadMore: false);
-            return true;
-         } else {
-            currentData.lastFetch = DateTime.now();
-            return false;
-         }
+        final newIds = result.products.map((p) => p.id).join(',');
+        final oldIds = currentData.products!
+            .take(limit)
+            .map((p) => p.id)
+            .join(',');
+        if (newIds != oldIds) {
+          _updateCache(category, result, isLoadMore: false);
+          return true;
+        } else {
+          currentData.updateData(lastFetch: DateTime.now());
+          return false;
+        }
       }
       return false;
     } catch (e) {
@@ -126,19 +170,20 @@ class CategoryCacheService {
 
   List<ProductModel> searchLocalCache(String query, {String? categoryName}) {
     if (query.isEmpty) return [];
-    
+
     final lowerQuery = query.toLowerCase();
     final Set<String> addedIds = {};
     final List<ProductModel> results = [];
 
     for (final entry in _cache.entries) {
       if (categoryName != null && entry.key != categoryName) continue;
-      
+
       final products = entry.value.products ?? [];
       for (final p in products) {
         if (p.id != null && !addedIds.contains(p.id)) {
-          final matches = p.name.toLowerCase().contains(lowerQuery) || 
-                          p.description.toLowerCase().contains(lowerQuery);
+          final matches =
+              p.name.toLowerCase().contains(lowerQuery) ||
+              p.description.toLowerCase().contains(lowerQuery);
           if (matches) {
             results.add(p);
             addedIds.add(p.id!);
@@ -155,7 +200,8 @@ class CategoryCacheService {
     DocumentSnapshot? startAfter,
     int limit = 20,
   }) async {
-    final reqKey = 'search_${categoryName ?? 'global'}_${query}_${startAfter?.id ?? 'start'}';
+    final reqKey =
+        'search_${categoryName ?? 'global'}_${query}_${startAfter?.id ?? 'start'}';
 
     if (_activeSearchRequests.containsKey(reqKey)) {
       return await _activeSearchRequests[reqKey]!;
@@ -163,9 +209,18 @@ class CategoryCacheService {
 
     Future<PaginatedProductsResult> req;
     if (categoryName != null) {
-      req = _firebaseService.searchProductsInCategory(categoryName, query, startAfter: startAfter, limit: limit);
+      req = _firebaseService.searchProductsInCategory(
+        categoryName,
+        query,
+        startAfter: startAfter,
+        limit: limit,
+      );
     } else {
-      req = _firebaseService.searchGlobalProducts(query, startAfter: startAfter, limit: limit);
+      req = _firebaseService.searchGlobalProducts(
+        query,
+        startAfter: startAfter,
+        limit: limit,
+      );
     }
 
     _activeSearchRequests[reqKey] = req;

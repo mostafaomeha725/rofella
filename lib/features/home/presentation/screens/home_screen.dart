@@ -12,8 +12,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<HomeCubit>()..init(),
+    return BlocProvider.value(
+      value: sl<HomeCubit>()..init(),
       child: const Scaffold(
         backgroundColor: Color(0xFFF9FAFB),
         drawer: AppDrawer(),

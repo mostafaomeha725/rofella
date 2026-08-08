@@ -37,14 +37,14 @@ class _FirebaseCategorySectionState extends State<FirebaseCategorySection> {
 
   Future<void> _loadData() async {
     final cachedData = _cacheService.getCached(widget.categoryTitle);
-    
+
     if (cachedData != null) {
       if (mounted) {
         setState(() {
           _data = cachedData;
         });
       }
-      
+
       if (cachedData.lastFetch != null) {
         final diff = DateTime.now().difference(cachedData.lastFetch!);
         if (diff.inMinutes >= 5) {
@@ -62,7 +62,10 @@ class _FirebaseCategorySectionState extends State<FirebaseCategorySection> {
   }
 
   Future<void> _backgroundRefresh() async {
-    final didUpdate = await _cacheService.backgroundRefresh(widget.categoryTitle, limit: 8);
+    final didUpdate = await _cacheService.backgroundRefresh(
+      widget.categoryTitle,
+      limit: 8,
+    );
     if (didUpdate && mounted) {
       setState(() {
         _data = _cacheService.getCached(widget.categoryTitle);
@@ -97,86 +100,105 @@ class _FirebaseCategorySectionState extends State<FirebaseCategorySection> {
   @override
   Widget build(BuildContext context) {
     if (_data == null || _data!.products == null) {
-      return const SizedBox.shrink();
+      return const SizedBox(
+        height: 350,
+        child: Center(
+          child: CircularProgressIndicator(color: Color(0xFF5C2428)),
+        ),
+      );
     }
 
-    final products = _data!.products!;
+    return ListenableBuilder(
+      listenable: _data!,
+      builder: (context, _) {
+        final products = _data!.products;
 
-    if (products.isEmpty) {
-      return widget.emptyStateWidget ?? const SizedBox.shrink();
-    }
+        if (products == null || products.isEmpty) {
+          return widget.emptyStateWidget ?? const SizedBox.shrink();
+        }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (widget.showTitle) SectionTitle(title: widget.categoryTitle),
-        LayoutBuilder(
-          builder: (context, constraints) {
-            int crossAxisCount;
-            if (constraints.maxWidth > 1024) {
-              crossAxisCount = 5;
-            } else if (constraints.maxWidth > 768) {
-              crossAxisCount = 4;
-            } else {
-              crossAxisCount = 2;
-            }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (widget.showTitle) SectionTitle(title: widget.categoryTitle),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                int crossAxisCount;
+                if (constraints.maxWidth > 1024) {
+                  crossAxisCount = 5;
+                } else if (constraints.maxWidth > 768) {
+                  crossAxisCount = 4;
+                } else {
+                  crossAxisCount = 2;
+                }
 
-            return GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: crossAxisCount,
-                childAspectRatio: 0.60,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-              ),
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                final product = products[index];
-                return _StaggeredAnimatedItem(
-                  key: ValueKey(product.id),
-                  index: index,
-                  productId: product.id ?? 'item_$index',
-                  animatedProductIds: _animatedProductIds,
-                  child: ProductCard(
-                    key: ValueKey(product.id),
-                    product: product,
+                return GridView.builder(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 16.0,
                   ),
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    childAspectRatio: 0.60,
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0,
+                  ),
+                  cacheExtent: 0,
+                  addAutomaticKeepAlives: false,
+                  addRepaintBoundaries: true,
+                  addSemanticIndexes: false,
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    final product = products[index];
+                    return _StaggeredAnimatedItem(
+                      key: ValueKey(product.id),
+                      index: index,
+                      productId: product.id ?? 'item_$index',
+                      animatedProductIds: _animatedProductIds,
+                      child: ProductCard(
+                        key: ValueKey(product.id),
+                        product: product,
+                      ),
+                    );
+                  },
                 );
               },
-            );
-          },
-        ),
-        if (_data!.hasMore && products.isNotEmpty)
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 24.0),
-              child: _isLoadingMore
-                  ? const CircularProgressIndicator(color: Colors.black)
-                  : ElevatedButton(
-                      onPressed: _fetchMoreProducts,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF111111),
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 32, vertical: 16),
-                      ),
-                      child: const Text(
-                        'Load more',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
             ),
-          ),
-      ],
+            if (_data!.hasMore && products.isNotEmpty)
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0, bottom: 24.0),
+                  child: _isLoadingMore
+                      ? const CircularProgressIndicator(color: Colors.black)
+                      : ElevatedButton(
+                          onPressed: _fetchMoreProducts,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF111111),
+                            foregroundColor: Colors.white,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 32,
+                              vertical: 16,
+                            ),
+                          ),
+                          child: const Text(
+                            'Load more',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }
@@ -209,30 +231,28 @@ class _StaggeredAnimatedItemState extends State<_StaggeredAnimatedItem>
   @override
   void initState() {
     super.initState();
-    _isAlreadyAnimated =
-        widget.animatedProductIds.contains(widget.productId);
+    _isAlreadyAnimated = widget.animatedProductIds.contains(widget.productId);
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 250),
     );
 
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.15),
+      begin: const Offset(0, 0.05),
       end: Offset.zero,
-    ).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic),
-    );
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     if (_isAlreadyAnimated) {
       _controller.value = 1.0;
     } else {
       widget.animatedProductIds.add(widget.productId);
-      final delay = (widget.index % 8) * 40;
+      final delay = (widget.index % 8) * 30;
       Future.delayed(Duration(milliseconds: delay), () {
         if (mounted) {
           _controller.forward();

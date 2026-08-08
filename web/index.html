@@ -21,18 +21,53 @@
   <meta name="description" content="A new Flutter project.">
 
   <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="shop">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-title" content="ROFELLA">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>shop</title>
+  <title>ROFELLA</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
+  <style>
+    .loader-container {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #FDF5EC; /* Match the app background */
+      z-index: 9999;
+    }
+    .loader {
+      border: 4px solid rgba(92, 36, 40, 0.1);
+      border-top: 4px solid #5C2428;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+  <div class="loader-container">
+    <div class="loader"></div>
+  </div>
+  <script>
+    window.addEventListener('flutter-first-frame', function() {
+      var loader = document.querySelector('.loader-container');
+      if (loader) {
+        loader.remove();
+      }
+    });
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

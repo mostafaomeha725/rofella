@@ -21,8 +21,6 @@ class HomeCubit extends Cubit<HomeState> {
   final FirebaseService _firebaseService;
   final CategoryCacheService _cacheService;
   StreamSubscription? _categoriesSub;
-  bool _hasPrefetched = false;
-
   HomeCubit({
     required FirebaseService firebaseService,
     required CategoryCacheService cacheService,
@@ -35,31 +33,26 @@ class HomeCubit extends Cubit<HomeState> {
     
     emit(HomeLoading());
     
+    // 1. Fetch instantly using Future for the first load
+    _firebaseService.getCategoriesFuture().then((categories) {
+      if (!isClosed && state is! HomeLoaded) {
+        emit(HomeLoaded(categories));
+      }
+    });
+
+    // 2. Listen to real-time updates silently
     _categoriesSub = _firebaseService.getCategories().listen(
       (categories) {
         if (!isClosed) {
           emit(HomeLoaded(categories));
-          
-          if (!_hasPrefetched) {
-            _hasPrefetched = true;
-            _prefetchTopCategories(categories);
-          }
         }
       },
       onError: (error) {
-        if (!isClosed) {
+        if (!isClosed && state is! HomeLoaded) {
           emit(HomeError(error.toString()));
         }
       },
     );
-  }
-
-  void _prefetchTopCategories(List<CategoryModel> categories) {
-    // Prefetch only the first 3 categories silently in the background
-    final topCategories = categories.take(3).toList();
-    for (final category in topCategories) {
-      _cacheService.prefetch(category.name, limit: 8); // Same limit as UI requests
-    }
   }
 
   @override

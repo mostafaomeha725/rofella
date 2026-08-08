@@ -64,6 +64,7 @@ class ShopApp extends StatelessWidget {
               seedColor: AppLightColors.primary,
             ),
           ),
+          scrollBehavior: const RightScrollbarBehavior(),
           routerConfig: router,
           builder: (context, child) {
             final easyLoading = EasyLoading.init();
@@ -85,5 +86,28 @@ class ShopApp extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class RightScrollbarBehavior extends MaterialScrollBehavior {
+  const RightScrollbarBehavior();
+
+  @override
+  Widget buildScrollbar(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    switch (getPlatform(context)) {
+      case TargetPlatform.linux:
+      case TargetPlatform.macOS:
+      case TargetPlatform.windows:
+        return Scrollbar(
+          controller: details.controller,
+          scrollbarOrientation: ScrollbarOrientation.right,
+          child: child,
+        );
+      case TargetPlatform.android:
+      case TargetPlatform.fuchsia:
+      case TargetPlatform.iOS:
+        return child;
+    }
   }
 }

@@ -27,19 +27,20 @@ class _ProductCardState extends State<ProductCard> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => context.push(Routes.productDetailsScreen, extra: widget.product),
+    return RepaintBoundary(
+      child: GestureDetector(
+        onTap: () => context.push(Routes.productDetailsScreen, extra: widget.product),
       child: Container(
-        clipBehavior: Clip.antiAlias,
+        clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(_radius),
           border: Border.all(color: const Color(0xFFF1F1F1)),
           boxShadow: const [
             BoxShadow(
-              color: Color(0x14000000),
-              blurRadius: 18,
-              offset: Offset(0, 8),
+              color: Color(0x0A000000),
+              blurRadius: 8,
+              offset: Offset(0, 4),
             ),
           ],
         ),
@@ -102,6 +103,7 @@ class _ProductCardState extends State<ProductCard> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

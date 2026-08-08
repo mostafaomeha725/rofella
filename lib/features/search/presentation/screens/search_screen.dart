@@ -24,15 +24,19 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     super.initState();
     _searchCubit = sl.get<SearchCubit>(param1: widget.categoryName);
-    
+
     _searchController.addListener(() {
       _searchCubit.searchLocal(_searchController.text);
     });
 
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - 200) {
         final state = _searchCubit.state;
-        if (state is SearchLoaded && state.hasMoreNetwork && !state.isNetworkLoadingMore && state.hasSearchedNetwork) {
+        if (state is SearchLoaded &&
+            state.hasMoreNetwork &&
+            !state.isNetworkLoadingMore &&
+            state.hasSearchedNetwork) {
           _searchCubit.searchNetwork();
         }
       }
@@ -57,7 +61,11 @@ class _SearchScreenState extends State<SearchScreen> {
           backgroundColor: Colors.white,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: Colors.black87, size: 20),
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black87,
+              size: 20,
+            ),
             onPressed: () => context.pop(),
           ),
           titleSpacing: 0,
@@ -70,6 +78,8 @@ class _SearchScreenState extends State<SearchScreen> {
             child: TextField(
               controller: _searchController,
               autofocus: true,
+              textDirection: TextDirection.rtl,
+              textAlign: TextAlign.right,
               textInputAction: TextInputAction.search,
               onSubmitted: (value) {
                 if (value.isNotEmpty) {
@@ -78,14 +88,25 @@ class _SearchScreenState extends State<SearchScreen> {
               },
               style: font14w400.copyWith(color: Colors.black87),
               decoration: InputDecoration(
-                hintText: 'ابحث عن المنتجات...',
+                hintText: 'ابحث عن المنتجات',
                 hintStyle: font14w400.copyWith(color: Colors.black45),
-                prefixIcon: const Icon(Icons.search, color: Colors.black45, size: 20),
+                prefixIcon: const Icon(
+                  Icons.search,
+                  color: Colors.black45,
+                  size: 20,
+                ),
                 border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 16,
+                ),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
-                        icon: const Icon(Icons.clear, color: Colors.black45, size: 16),
+                        icon: const Icon(
+                          Icons.clear,
+                          color: Colors.black45,
+                          size: 16,
+                        ),
                         onPressed: () {
                           _searchController.clear();
                         },
@@ -94,9 +115,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
           ),
-          actions: [
-            const SizedBox(width: 16),
-          ],
+          actions: [const SizedBox(width: 16)],
         ),
         body: BlocBuilder<SearchCubit, SearchState>(
           builder: (context, state) {
@@ -110,7 +129,9 @@ class _SearchScreenState extends State<SearchScreen> {
             }
 
             if (state is SearchLoading) {
-              return const Center(child: CircularProgressIndicator(color: Color(0xFF9E6566)));
+              return const Center(
+                child: CircularProgressIndicator(color: Color(0xFF9E6566)),
+              );
             }
 
             if (state is SearchError) {
@@ -136,30 +157,50 @@ class _SearchScreenState extends State<SearchScreen> {
                 );
               }
 
-              return Column(
-                children: [
-                  Expanded(
-                    child: GridView.builder(
-                      controller: _scrollController,
-                      padding: const EdgeInsets.all(16),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 16,
-                        crossAxisSpacing: 16,
-                        childAspectRatio: 0.7,
+              return Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            int crossAxisCount;
+                            if (constraints.maxWidth > 1024) {
+                              crossAxisCount = 5;
+                            } else if (constraints.maxWidth > 768) {
+                              crossAxisCount = 4;
+                            } else {
+                              crossAxisCount = 2;
+                            }
+
+                            return GridView.builder(
+                              controller: _scrollController,
+                              padding: const EdgeInsets.all(16),
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: crossAxisCount,
+                                mainAxisSpacing: 16,
+                                crossAxisSpacing: 16,
+                                childAspectRatio: 0.60,
+                              ),
+                              itemCount: products.length,
+                              itemBuilder: (context, index) {
+                                return ProductCard(product: products[index]);
+                              },
+                            );
+                          },
+                        ),
                       ),
-                      itemCount: products.length,
-                      itemBuilder: (context, index) {
-                        return ProductCard(product: products[index]);
-                      },
-                    ),
+                      if (state.isNetworkLoadingMore)
+                        const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: CircularProgressIndicator(
+                            color: Color(0xFF9E6566),
+                          ),
+                        ),
+                    ],
                   ),
-                  if (state.isNetworkLoadingMore)
-                    const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: CircularProgressIndicator(color: Color(0xFF9E6566)),
-                    ),
-                ],
+                ),
               );
             }
 

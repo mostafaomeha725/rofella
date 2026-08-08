@@ -10,6 +10,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../../data/models/category_model.dart';
 import '../../data/services/cloudinary_service.dart';
 import '../../data/services/firebase_service.dart';
+import '../../data/services/image_compression_service.dart';
+import 'package:shop/core/di/services_locator.dart';
 
 class AdminAddCategoryScreen extends StatefulWidget {
   final CategoryModel? categoryToEdit;
@@ -75,7 +77,13 @@ class _AdminAddCategoryScreenState extends State<AdminAddCategoryScreen> {
 
       // Upload new image if selected
       if (_selectedImage != null) {
-        final url = await CloudinaryService.uploadImage(_selectedImage!);
+        final imageCompressionService = sl<ImageCompressionService>();
+        final cloudinaryService = sl<CloudinaryService>();
+        
+        final originalBytes = await _selectedImage!.readAsBytes();
+        final compressedBytes = await imageCompressionService.compress(originalBytes);
+        final url = await cloudinaryService.uploadImage(compressedBytes, _selectedImage!.name);
+        
         if (url == null) {
           EasyLoading.dismiss();
           if (mounted) {

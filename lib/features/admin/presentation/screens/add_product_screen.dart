@@ -11,6 +11,8 @@ import '../../data/models/product_model.dart';
 import '../../data/models/category_model.dart';
 import '../../data/services/cloudinary_service.dart';
 import '../../data/services/firebase_service.dart';
+import '../../data/services/image_compression_service.dart';
+import 'package:shop/core/di/services_locator.dart';
 
 class AdminAddProductScreen extends StatefulWidget {
   final ProductModel? productToEdit;
@@ -75,8 +77,14 @@ class _AdminAddProductScreenState extends State<AdminAddProductScreen> {
 
     try {
       List<String> imageUrls = List.from(_existingImages);
+      
+      final imageCompressionService = sl<ImageCompressionService>();
+      final cloudinaryService = sl<CloudinaryService>();
+
       for (var image in _selectedImages) {
-        final url = await CloudinaryService.uploadImage(image);
+        final originalBytes = await image.readAsBytes();
+        final compressedBytes = await imageCompressionService.compress(originalBytes);
+        final url = await cloudinaryService.uploadImage(compressedBytes, image.name);
         if (url != null) {
           imageUrls.add(url);
         }
