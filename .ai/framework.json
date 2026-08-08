@@ -1,0 +1,631 @@
+{
+  "schema_version": 1,
+  "framework_version": "2.0",
+  "generated_at": "2026-08-04T14:55:24.828998",
+  "framework_hash": "218380560",
+  "generator_version": "1.0",
+  "generated_by": "Flutter AI Framework",
+  "overview": "Reusable Core Framework",
+  "widgets": [
+    "AppAsset",
+    "AppFormField",
+    "AppImage",
+    "AppSVG",
+    "BouncingSocialButton",
+    "BounceIt",
+    "CustomBottomNavBar",
+    "AppButton",
+    "CustomNavBar",
+    "CustomSearch",
+    "AppText",
+    "GovernorateDropdown",
+    "NavBarItem",
+    "OpenGymSwitch"
+  ],
+  "typography": [],
+  "theme": [],
+  "services": [
+    {
+      "name": "NetworkService",
+      "methods": [
+        {
+          "name": "addInterceptors",
+          "returnType": "void",
+          "parameters": []
+        },
+        {
+          "name": "addHeaders",
+          "returnType": "void",
+          "parameters": []
+        },
+        {
+          "name": "addToken",
+          "returnType": "void",
+          "parameters": [
+            "String token"
+          ]
+        },
+        {
+          "name": "removeToken",
+          "returnType": "void",
+          "parameters": []
+        },
+        {
+          "name": "postData",
+          "returnType": "Future<Either<Failure, dynamic>>",
+          "parameters": [
+            "required String endPoint",
+            "Map<String, dynamic>? data",
+            "Map<String, dynamic>? queryParameters",
+            "String? token",
+            "bool isRaw = true"
+          ]
+        },
+        {
+          "name": "postEncryptedData",
+          "returnType": "Future<Either<Failure, dynamic>>",
+          "parameters": [
+            "required String endPoint",
+            "Map<String, dynamic>? data",
+            "Map<String, dynamic>? queryParameters",
+            "String? token",
+            "bool isRaw = true"
+          ]
+        },
+        {
+          "name": "uploadFile",
+          "returnType": "Future<Either<Failure, dynamic>>",
+          "parameters": [
+            "required String endPoint",
+            "required FormData formData",
+            "Map<String, dynamic>? queryParameters",
+            "String? token"
+          ]
+        },
+        {
+          "name": "downloadFile",
+          "returnType": "Future<Either<String, dynamic>>",
+          "parameters": [
+            "required String fileUrl",
+            "required String savePath",
+            "Map<String, dynamic>? queryParameters",
+            "String? token"
+          ]
+        },
+        {
+          "name": "putData",
+          "returnType": "Future<Either<Failure, dynamic>>",
+          "parameters": [
+            "required String endPoint",
+            "Map<String, dynamic>? data",
+            "Map<String, dynamic>? queryParameters",
+            "String? token"
+          ]
+        },
+        {
+          "name": "patchData",
+          "returnType": "Future<Either<String, dynamic>>",
+          "parameters": [
+            "required String endPoint",
+            "Map<String, dynamic>? data",
+            "Map<String, dynamic>? queryParameters",
+            "String? token",
+            "bool isRaw = true"
+          ]
+        },
+        {
+          "name": "deleteData",
+          "returnType": "Future<Either<String, dynamic>>",
+          "parameters": [
+            "required String endPoint",
+            "Map<String, dynamic>? data",
+            "Map<String, dynamic>? queryParameters",
+            "String? token"
+          ]
+        },
+        {
+          "name": "getData",
+          "returnType": "Future<Either<Failure, dynamic>>",
+          "parameters": [
+            "required String endPoint",
+            "Map<String, dynamic>? queryParameters",
+            "String? token"
+          ]
+        },
+        {
+          "name": "handleDioExceoptions",
+          "returnType": "Left<Failure, dynamic>",
+          "parameters": [
+            "DioException e"
+          ]
+        },
+        {
+          "name": "hmacSha256",
+          "returnType": "String",
+          "parameters": [
+            "String data"
+          ]
+        }
+      ]
+    }
+  ],
+  "routing": [],
+  "extensions": [
+    "SubscriptionTabExtension",
+    "ResponsiveSized",
+    "ResponsiveRadiuse",
+    "StringColor",
+    "StringToNumber",
+    "ColorToMaterialStateProperty",
+    "TimeConverter",
+    "BorderRadiusAnyWidget",
+    "ExtTheme",
+    "GoRouterExtensions",
+    "BMTextTheme",
+    "BlocBaseExtension",
+    "BlocBaseIterableExtension",
+    "BlocBaseNumberExtension"
+  ],
+  "network": [
+    "dartz (Either<Failure, T>)",
+    "NetworkService"
+  ],
+  "loading_system": [
+    "flutter_easyloading (EasyLoading)"
+  ],
+  "responsive": {
+    "enabled": true,
+    "system": "flutter_screenutil",
+    "rules": {
+      "width": ".w",
+      "height": ".h",
+      "radius": ".r",
+      "font": ".sp",
+      "padding": ".w or .h",
+      "margin": ".w or .h",
+      "icon": ".sp or .w",
+      "border_width": ".w"
+    },
+    "design_size": {
+      "width": 420.0,
+      "height": 910.0
+    }
+  },
+  "spacing_helpers": [],
+  "constants": [
+    {
+      "name": "sl",
+      "sourceFile": "lib/core/di/services_locator.dart",
+      "type": "unknown",
+      "value": "GetIt.instance",
+      "declaringElement": "sl"
+    },
+    {
+      "name": "apiSecret",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'kJ5kHX2vCfiy0zc2mWulKgZy0TFo6pTF'",
+      "declaringElement": "apiSecret"
+    },
+    {
+      "name": "registerUser",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Authentication/register-user'",
+      "declaringElement": "registerUser"
+    },
+    {
+      "name": "registerOwner",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Authentication/register-owner'",
+      "declaringElement": "registerOwner"
+    },
+    {
+      "name": "login",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Authentication/login'",
+      "declaringElement": "login"
+    },
+    {
+      "name": "logout",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Authentication/logout'",
+      "declaringElement": "logout"
+    },
+    {
+      "name": "refreshToken",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Authentication/refresh-token'",
+      "declaringElement": "refreshToken"
+    },
+    {
+      "name": "googleLogin",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Authentication/google'",
+      "declaringElement": "googleLogin"
+    },
+    {
+      "name": "sendOtp",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'send-otp'",
+      "declaringElement": "sendOtp"
+    },
+    {
+      "name": "verifyOtp",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'auth/verify-otp'",
+      "declaringElement": "verifyOtp"
+    },
+    {
+      "name": "resendOtp",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'auth/receive-otp'",
+      "declaringElement": "resendOtp"
+    },
+    {
+      "name": "forgotPassword",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Authentication/send-reset-password-email'",
+      "declaringElement": "forgotPassword"
+    },
+    {
+      "name": "validateResetPasswordCode",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Authentication/validate-reset-password-code'",
+      "declaringElement": "validateResetPasswordCode"
+    },
+    {
+      "name": "resendConfirmationEmail",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Authentication/resend-confirmation-email'",
+      "declaringElement": "resendConfirmationEmail"
+    },
+    {
+      "name": "confirmEmail",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Authentication/confirm-email'",
+      "declaringElement": "confirmEmail"
+    },
+    {
+      "name": "resetPassword",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Authentication/reset-password'",
+      "declaringElement": "resetPassword"
+    },
+    {
+      "name": "changePassword",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Authentication/change-password'",
+      "declaringElement": "changePassword"
+    },
+    {
+      "name": "profile",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'profile'",
+      "declaringElement": "profile"
+    },
+    {
+      "name": "getCurrentUser",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Users/me'",
+      "declaringElement": "getCurrentUser"
+    },
+    {
+      "name": "updateFcmToken",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Notifications/register-token'",
+      "declaringElement": "updateFcmToken"
+    },
+    {
+      "name": "getInAppNotifications",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'InAppNotifications'",
+      "declaringElement": "getInAppNotifications"
+    },
+    {
+      "name": "getUnreadNotificationCount",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'InAppNotifications/unread-count'",
+      "declaringElement": "getUnreadNotificationCount"
+    },
+    {
+      "name": "getEcommerceHome",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Ecommerce/home'",
+      "declaringElement": "getEcommerceHome"
+    },
+    {
+      "name": "bankingDashboard",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Banking/dashboard'",
+      "declaringElement": "bankingDashboard"
+    },
+    {
+      "name": "bankingTransactions",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Banking/transactions'",
+      "declaringElement": "bankingTransactions"
+    },
+    {
+      "name": "bankingTransfer",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Banking/transfer'",
+      "declaringElement": "bankingTransfer"
+    },
+    {
+      "name": "bankingBeneficiaries",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Banking/beneficiaries'",
+      "declaringElement": "bankingBeneficiaries"
+    },
+    {
+      "name": "bankingPayments",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Banking/payments'",
+      "declaringElement": "bankingPayments"
+    },
+    {
+      "name": "bankingBills",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Banking/bills'",
+      "declaringElement": "bankingBills"
+    },
+    {
+      "name": "bankingStatistics",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Banking/statistics'",
+      "declaringElement": "bankingStatistics"
+    },
+    {
+      "name": "createBranch",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Owner/Branches'",
+      "declaringElement": "createBranch"
+    },
+    {
+      "name": "getBranches",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Branches'",
+      "declaringElement": "getBranches"
+    },
+    {
+      "name": "getAllBranchesStatistics",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Owner/Branches/statistics'",
+      "declaringElement": "getAllBranchesStatistics"
+    },
+    {
+      "name": "getMySubscriptions",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'users/me/subscriptions'",
+      "declaringElement": "getMySubscriptions"
+    },
+    {
+      "name": "getNearbyBranches",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Branches/public'",
+      "declaringElement": "getNearbyBranches"
+    },
+    {
+      "name": "getGovernorates",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Governorates'",
+      "declaringElement": "getGovernorates"
+    },
+    {
+      "name": "addCheckIn",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'CheckIns'",
+      "declaringElement": "addCheckIn"
+    },
+    {
+      "name": "getRoles",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'employees/roles'",
+      "declaringElement": "getRoles"
+    },
+    {
+      "name": "addEmployee",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'Employees'",
+      "declaringElement": "addEmployee"
+    },
+    {
+      "name": "initializePayment",
+      "sourceFile": "lib/core/network/endpoints.dart",
+      "type": "String",
+      "value": "'payments/initialize'",
+      "declaringElement": "initializePayment"
+    },
+    {
+      "name": "navigatorKey",
+      "sourceFile": "lib/core/routes/app_routes.dart",
+      "type": "object",
+      "value": "GlobalKey<NavigatorState>()",
+      "declaringElement": "navigatorKey"
+    },
+    {
+      "name": "customGoRouterObserver",
+      "sourceFile": "lib/core/routes/app_routes.dart",
+      "type": "object",
+      "value": "CustomGoRouterObserver()",
+      "declaringElement": "customGoRouterObserver"
+    },
+    {
+      "name": "splashScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/splash'",
+      "declaringElement": "splashScreen"
+    },
+    {
+      "name": "onBoardingScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/on-boarding-screen'",
+      "declaringElement": "onBoardingScreen"
+    },
+    {
+      "name": "loginScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/login'",
+      "declaringElement": "loginScreen"
+    },
+    {
+      "name": "forgetPasswordScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/forget-password'",
+      "declaringElement": "forgetPasswordScreen"
+    },
+    {
+      "name": "resetPasswordScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/reset-password'",
+      "declaringElement": "resetPasswordScreen"
+    },
+    {
+      "name": "registerScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/register'",
+      "declaringElement": "registerScreen"
+    },
+    {
+      "name": "otpScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/otp'",
+      "declaringElement": "otpScreen"
+    },
+    {
+      "name": "homeScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/home'",
+      "declaringElement": "homeScreen"
+    },
+    {
+      "name": "mainNavigationScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/mainNavigationScreen'",
+      "declaringElement": "mainNavigationScreen"
+    },
+    {
+      "name": "profileScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/profile'",
+      "declaringElement": "profileScreen"
+    },
+    {
+      "name": "notificationsScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/notifications-screen'",
+      "declaringElement": "notificationsScreen"
+    },
+    {
+      "name": "ecommerceHomeScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/ecommerceHomeScreen'",
+      "declaringElement": "ecommerceHomeScreen"
+    },
+    {
+      "name": "productDetailsScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/productDetailsScreen'",
+      "declaringElement": "productDetailsScreen"
+    },
+    {
+      "name": "bankingDashboardScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/bankingDashboardScreen'",
+      "declaringElement": "bankingDashboardScreen"
+    },
+    {
+      "name": "bankingTransactionsScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/bankingTransactionsScreen'",
+      "declaringElement": "bankingTransactionsScreen"
+    },
+    {
+      "name": "bankingTransactionDetailsScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/bankingTransactionDetailsScreen'",
+      "declaringElement": "bankingTransactionDetailsScreen"
+    },
+    {
+      "name": "bankingTransferScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/bankingTransferScreen'",
+      "declaringElement": "bankingTransferScreen"
+    },
+    {
+      "name": "bankingAddBeneficiaryScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/bankingAddBeneficiaryScreen'",
+      "declaringElement": "bankingAddBeneficiaryScreen"
+    },
+    {
+      "name": "bankingBillsScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/bankingBillsScreen'",
+      "declaringElement": "bankingBillsScreen"
+    },
+    {
+      "name": "bankingStatisticsScreen",
+      "sourceFile": "lib/core/routes/route_paths.dart",
+      "type": "String",
+      "value": "'/bankingStatisticsScreen'",
+      "declaringElement": "bankingStatisticsScreen"
+    }
+  ]
+}

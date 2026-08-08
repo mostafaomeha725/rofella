@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "framework_version": "2.0",
+  "generated_at": "2026-08-04T14:59:58.592475",
+  "generator_version": "1.0",
+  "generated_by": "Flutter AI Framework",
+  "metrics": {
+    "total_dart_files": 228,
+    "total_classes": 318,
+    "total_widgets": 48,
+    "total_cubits": 14,
+    "total_repositories": 7,
+    "total_services": 1,
+    "total_injections": 797
+  }
+}

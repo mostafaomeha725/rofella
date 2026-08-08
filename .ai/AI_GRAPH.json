@@ -1,0 +1,4889 @@
+{
+  "schema_version": 1,
+  "framework_version": "2.0",
+  "generated_at": "2026-08-04T14:59:58.382486",
+  "graph_hash": "244616572",
+  "generator_version": "1.0",
+  "generated_by": "Flutter AI Framework",
+  "warnings": [
+    "Circular Dependency Detected: NotificationStyle -> NotificationStyle",
+    "Circular Dependency Detected: NotificationStyle -> NotificationStyle",
+    "Circular Dependency Detected: NotificationStyle -> NotificationStyle",
+    "Circular Dependency Detected: NotificationStyle -> NotificationStyle",
+    "Circular Dependency Detected: NotificationStyle -> NotificationStyle",
+    "Circular Dependency Detected: NotificationStyle -> NotificationStyle"
+  ],
+  "ui": {
+    "nodes": [
+      {
+        "name": "AppAsset",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "String",
+            "name": "assetName",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "width",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "height",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color?",
+            "name": "color",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "BoxFit?",
+            "name": "fit",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Icon",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "AppFormField",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatefulWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "TextEditingController",
+            "name": "controller",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String",
+            "name": "hintText",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Widget?",
+            "name": "suffixIcon",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Widget?",
+            "name": "prefixIcon",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "TextInputAction?",
+            "name": "textInputAction",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "TextInputType?",
+            "name": "keyboardType",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "bool?",
+            "name": "enabled",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "void Function(String?)?",
+            "name": "onSaved",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String? Function(String?)?",
+            "name": "validator",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String?",
+            "name": "validatedText",
+            "injectionMethod": "field"
+          },
+          {
+            "type": " Function(String)?",
+            "name": "onFieldSubmitted",
+            "injectionMethod": "field"
+          },
+          {
+            "type": " Function(String)?",
+            "name": "onChanged",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "VoidCallback?",
+            "name": "onTap",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "int?",
+            "name": "maxLength",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "int?",
+            "name": "minLines",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "int?",
+            "name": "maxLines",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "List<TextInputFormatter>?",
+            "name": "inputFormatters",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "TextAlign",
+            "name": "textAlign",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "AutovalidateMode",
+            "name": "autovalidateMode",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "radius",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "borderWidth",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "bool",
+            "name": "obsecureText",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "bool",
+            "name": "readOnly",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Iterable<String>?",
+            "name": "autofillHints",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "EdgeInsetsGeometry?",
+            "name": "contentPadding",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color?",
+            "name": "fillColor",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color?",
+            "name": "borderColor",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "createState",
+            "returnType": "State<AppFormField>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "_AppFormFieldState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "State<AppFormField>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "AppImage",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatefulWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "String",
+            "name": "imageUrl",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "width",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "height",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "BorderRadius?",
+            "name": "borderRadius",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "BoxFit?",
+            "name": "fit",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "bool",
+            "name": "showprogressIndicator",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "bool",
+            "name": "useMemCache",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "createState",
+            "returnType": "State<AppImage>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "_AppImageState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "State<AppImage>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "SizedBox",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "AppAsset",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "initState",
+            "returnType": "void",
+            "parameters": []
+          },
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "AppSVG",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "String",
+            "name": "assetName",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "width",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "height",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color?",
+            "name": "color",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "BoxFit",
+            "name": "fit",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "BouncingSocialButton",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "String",
+            "name": "text",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "VoidCallback?",
+            "name": "onTap",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String?",
+            "name": "assetName",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "IconData?",
+            "name": "icon",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Widget?",
+            "name": "leading",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color?",
+            "name": "borderColor",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color?",
+            "name": "textColor",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "textSize",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color?",
+            "name": "color",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Gradient?",
+            "name": "gradient",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "height",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "BounceIt",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatefulWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Widget",
+            "name": "child",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "VoidCallback?",
+            "name": "onPressed",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Duration",
+            "name": "duration",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Duration",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "createState",
+            "returnType": "BounceItState",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "BounceItState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "State<BounceIt>",
+        "interfaces": [],
+        "mixins": [
+          "SingleTickerProviderStateMixin"
+        ],
+        "dependencies": [
+          {
+            "type": "double",
+            "name": "_scale",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "AnimationController",
+            "name": "_controller",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "initState",
+            "returnType": "void",
+            "parameters": []
+          },
+          {
+            "name": "dispose",
+            "returnType": "void",
+            "parameters": []
+          },
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "CustomBottomNavBar",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "List<Map<String, dynamic>>",
+            "name": "navItems",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "NavigationState",
+            "name": "navState",
+            "injectionMethod": "field"
+          },
+          {
+            "type": " Function(int)",
+            "name": "onItemTapped",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Offset",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "AppButton",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [
+          "Equatable"
+        ],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "String",
+            "name": "text",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "VoidCallback?",
+            "name": "onPressed",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "radius",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "EdgeInsetsGeometry?",
+            "name": "contentPadding",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "EdgeInsetsGeometry?",
+            "name": "margin",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color?",
+            "name": "color",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Gradient?",
+            "name": "gradient",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color?",
+            "name": "borderColor",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color?",
+            "name": "textColor",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color?",
+            "name": "hoveColor",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "FontWeight?",
+            "name": "textWeight",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "textSize",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "elevation",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "gapLeadingText",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Widget?",
+            "name": "child",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "height",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "letterSpacing",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "BorderSide?",
+            "name": "side",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double",
+            "name": "textHeight",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "EdgeInsets.all",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          },
+          {
+            "name": "props",
+            "returnType": "List<Object?>",
+            "parameters": []
+          },
+          {
+            "name": "stringify",
+            "returnType": "bool?",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "CustomNavBar",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatefulWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "bool",
+            "name": "isAdmin",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "of",
+            "returnType": "_CustomNavBarState?",
+            "parameters": [
+              "BuildContext context"
+            ]
+          },
+          {
+            "name": "createState",
+            "returnType": "State<CustomNavBar>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "_CustomNavBarState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "State<CustomNavBar>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "NavigationState",
+            "name": "_navState",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "List<Map<String, dynamic>>",
+            "name": "_navItems",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "List<Widget>",
+            "name": "_screens",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Duration",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "initState",
+            "returnType": "void",
+            "parameters": []
+          },
+          {
+            "name": "goBack",
+            "returnType": "void",
+            "parameters": []
+          },
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "CustomSearch",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "TextEditingController",
+            "name": "controller",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String",
+            "name": "hintText",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "ValueChanged<String>?",
+            "name": "onChanged",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "ValueChanged<String>?",
+            "name": "onSubmitted",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color?",
+            "name": "borderColor",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "AppText",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "String",
+            "name": "text",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "fontSize",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color?",
+            "name": "color",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color?",
+            "name": "bgColor",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "AlignmentDirectional",
+            "name": "alignment",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String?",
+            "name": "fontFamily",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "FontWeight?",
+            "name": "fontWeight",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "int?",
+            "name": "maxLines",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "TextAlign?",
+            "name": "textAlign",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "FontStyle?",
+            "name": "fontStyle",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "TextOverflow?",
+            "name": "overflow",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "TextDirection?",
+            "name": "textDirection",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "bool",
+            "name": "isArabicText",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "letterSpacing",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "wordSpacing",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "textHeight",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "TextStyle?",
+            "name": "style",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "EdgeInsetsGeometry?",
+            "name": "textPadding",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "EdgeInsetsGeometry?",
+            "name": "textMargin",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "TextDecoration?",
+            "name": "decoration",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String",
+            "name": "text",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "GovernorateDropdown",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatefulWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "String?",
+            "name": "initialValue",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "List<GovernorateDropdownItem>",
+            "name": "governorates",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "bool",
+            "name": "isLoading",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "VoidCallback?",
+            "name": "onMenuOpen",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "void Function(String?)?",
+            "name": "onChanged",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "void Function(int?)?",
+            "name": "onChangedId",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String?",
+            "name": "hintText",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String?",
+            "name": "labelText",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color?",
+            "name": "borderColor",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "double?",
+            "name": "borderRadius",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color?",
+            "name": "backgroundColor",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "createState",
+            "returnType": "State<GovernorateDropdown>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "_GovernorateDropdownState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "State<GovernorateDropdown>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "String?",
+            "name": "selectedGovernorate",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Color",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Color",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "initState",
+            "returnType": "void",
+            "parameters": []
+          },
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "NavigationState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "int",
+            "name": "selectedIndex",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "List<int>",
+            "name": "navigationStack",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "onItemTapped",
+            "returnType": "void",
+            "parameters": [
+              "int index",
+              "VoidCallback onStateChanged"
+            ]
+          },
+          {
+            "name": "goBack",
+            "returnType": "void",
+            "parameters": [
+              "VoidCallback onStateChanged"
+            ]
+          },
+          {
+            "name": "handleBackPress",
+            "returnType": "void",
+            "parameters": [
+              "VoidCallback onStateChanged"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "NavBarItem",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "IconData",
+            "name": "icon",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String",
+            "name": "label",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "bool",
+            "name": "isSelected",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "VoidCallback",
+            "name": "onTap",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Color",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Duration",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Duration",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "OpenGymSwitch",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "bool",
+            "name": "value",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "ValueChanged<bool>",
+            "name": "onChanged",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Color",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Color",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "AuthState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "Equatable",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "props",
+            "returnType": "List<Object>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "ForgetPasswordScreen",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "ForgetPasswordScreenBody",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "LoginScreen",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "LoginScreenBody",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "RegisterScreen",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Text",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Center",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ForgetPasswordScreenBody",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatefulWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "createState",
+            "returnType": "State<ForgetPasswordScreenBody>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "_ForgetPasswordScreenBodyState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "State<ForgetPasswordScreenBody>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "GlobalKey<FormState>",
+            "name": "_formKey",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "TextEditingController",
+            "name": "_emailController",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "AuthCubit",
+            "injectionMethod": "context.read"
+          },
+          {
+            "type": "EdgeInsets.all",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "dispose",
+            "returnType": "void",
+            "parameters": []
+          },
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "LoginScreenBody",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatefulWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "createState",
+            "returnType": "State<LoginScreenBody>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "_LoginScreenBodyState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "State<LoginScreenBody>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "GlobalKey<FormState>",
+            "name": "_formKey",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "TextEditingController",
+            "name": "_emailController",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "TextEditingController",
+            "name": "_passwordController",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "AuthCubit",
+            "injectionMethod": "context.read"
+          },
+          {
+            "type": "EdgeInsets.all",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "dispose",
+            "returnType": "void",
+            "parameters": []
+          },
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "AddBeneficiaryState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "Equatable",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "props",
+            "returnType": "List<Object>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "BankingDashboardState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "Equatable",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "props",
+            "returnType": "List<Object>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "BankingStatisticsState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "Equatable",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "props",
+            "returnType": "List<Object>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "BillsState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "Equatable",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "props",
+            "returnType": "List<Object>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "TransactionsState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "Equatable",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "props",
+            "returnType": "List<Object>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "TransactionDetailsState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "Equatable",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "props",
+            "returnType": "List<Object>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "TransferMoneyState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "Equatable",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "props",
+            "returnType": "List<Object>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "AddBeneficiaryScreen",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatefulWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "createState",
+            "returnType": "State<AddBeneficiaryScreen>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "_AddBeneficiaryScreenState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "State<AddBeneficiaryScreen>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Text",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Icon",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Icon",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Icon",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Spacer",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "AddBeneficiaryCubit",
+            "injectionMethod": "context.read"
+          }
+        ],
+        "methods": [
+          {
+            "name": "dispose",
+            "returnType": "void",
+            "parameters": []
+          },
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "BankingDashboardScreen",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Text",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Icon",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Icon",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Center",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "BankingDashboardCubit",
+            "injectionMethod": "context.read"
+          },
+          {
+            "type": "BankingDashboardCubit",
+            "injectionMethod": "context.read"
+          },
+          {
+            "type": "Text",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "SizedBox.shrink",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "BankingStatisticsScreen",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Text",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Center",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "BankingStatisticsCubit",
+            "injectionMethod": "context.read"
+          },
+          {
+            "type": "AlwaysScrollableScrollPhysics",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "SizedBox.shrink",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "BankingBillsScreen",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Text",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Center",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "BillsCubit",
+            "injectionMethod": "context.read"
+          },
+          {
+            "type": "SizedBox.shrink",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "BillsCubit",
+            "injectionMethod": "context.read"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "TransactionsScreen",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Text",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Center",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "TransactionsCubit",
+            "injectionMethod": "context.read"
+          },
+          {
+            "type": "SizedBox.shrink",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "TransactionDetailsScreen",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Text",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Center",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "SizedBox.shrink",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "TransferMoneyScreen",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatefulWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "createState",
+            "returnType": "State<TransferMoneyScreen>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "_TransferMoneyScreenState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "State<TransferMoneyScreen>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Text",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Icon",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Icon",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Spacer",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "TransferMoneyCubit",
+            "injectionMethod": "context.read"
+          }
+        ],
+        "methods": [
+          {
+            "name": "dispose",
+            "returnType": "void",
+            "parameters": []
+          },
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "AccountCard",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "BankAccount",
+            "name": "account",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "LinearGradient",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Offset",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "BankingDashboardScreenBody",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "DashboardData",
+            "name": "data",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "NeverScrollableScrollPhysics",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "QuickActionsRow",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "VoidCallback",
+            "name": "onTransfer",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "VoidCallback",
+            "name": "onPayBills",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "VoidCallback",
+            "name": "onAddBeneficiary",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "VoidCallback",
+            "name": "onStatistics",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "TransactionItem",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "BankingTransaction",
+            "name": "transaction",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "VoidCallback",
+            "name": "onTap",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "EcommerceHomeState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "Equatable",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "props",
+            "returnType": "List<Object>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "EcommerceHomeScreen",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Text",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Size.fromHeight",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "EdgeInsets.all",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Icon",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Center",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "EcommerceHomeCubit",
+            "injectionMethod": "context.read"
+          },
+          {
+            "type": "EcommerceHomeCubit",
+            "injectionMethod": "context.read"
+          },
+          {
+            "type": "AlwaysScrollableScrollPhysics",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Center",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "CategoriesRow",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "List<Category>",
+            "name": "categories",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "SizedBox.shrink",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "EdgeInsets.symmetric",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "EdgeInsets.symmetric",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "EcommerceHomeScreenBody",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "EcommerceHomeData",
+            "name": "data",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ProductsHorizontalList",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "String",
+            "name": "title",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "List<Product>",
+            "name": "products",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "SizedBox.shrink",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "EdgeInsets.symmetric",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "EdgeInsets.symmetric",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "PromoBannerSlider",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "List<PromoBanner>",
+            "name": "banners",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "SizedBox.shrink",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "EdgeInsets.symmetric",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "HomeState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "Equatable",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "props",
+            "returnType": "List<Object>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "HomeScreen",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Center",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Center",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "HomeScreenBody",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "List<Branch>",
+            "name": "branches",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "EdgeInsets.all",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "EdgeInsets.all",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "NotificationsState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "Equatable",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "props",
+            "returnType": "List<Object>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "NotificationsScreen",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Center",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Center",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "NotificationsScreenBody",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "List<AppNotification>",
+            "name": "notifications",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "EdgeInsets.all",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "EdgeInsets.all",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ProductDetailsState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "Equatable",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "props",
+            "returnType": "List<Object>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "ProductDetailsScreen",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "int",
+            "name": "productId",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Text",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Center",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "ProductDetailsCubit",
+            "injectionMethod": "context.read"
+          },
+          {
+            "type": "ProductDetailsCubit",
+            "injectionMethod": "context.read"
+          },
+          {
+            "type": "AlwaysScrollableScrollPhysics",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Center",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ProductActionsBar",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "bool",
+            "name": "isAvailable",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "VoidCallback",
+            "name": "onAddToCart",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Offset",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ProductDetailsScreenBody",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "ProductDetails",
+            "name": "product",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ProductImageCarousel",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "List<String>",
+            "name": "images",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ProductInfoSection",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "ProductDetails",
+            "name": "product",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ProfileState",
+        "role": "state",
+        "modifiers": {},
+        "superclass": "Equatable",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "props",
+            "returnType": "List<Object>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "ProfileScreen",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Center",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Center",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ProfileScreenBody",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "UserProfile",
+            "name": "profile",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "EdgeInsets.all",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Icon",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "SplashScreen",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Placeholder",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "DefaultApp",
+        "role": "widget",
+        "modifiers": {},
+        "superclass": "StatelessWidget",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Size",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "build",
+            "returnType": "Widget",
+            "parameters": [
+              "BuildContext context"
+            ]
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": "_AppImageState",
+        "target": "AppAsset",
+        "relation": "usage"
+      },
+      {
+        "source": "CustomBottomNavBar",
+        "target": "NavigationState",
+        "relation": "field"
+      },
+      {
+        "source": "_CustomNavBarState",
+        "target": "NavigationState",
+        "relation": "field"
+      },
+      {
+        "source": "ForgetPasswordScreen",
+        "target": "ForgetPasswordScreenBody",
+        "relation": "usage"
+      },
+      {
+        "source": "LoginScreen",
+        "target": "LoginScreenBody",
+        "relation": "usage"
+      },
+      {
+        "source": "_ForgetPasswordScreenBodyState",
+        "target": "AuthCubit",
+        "relation": "context.read"
+      },
+      {
+        "source": "_LoginScreenBodyState",
+        "target": "AuthCubit",
+        "relation": "context.read"
+      },
+      {
+        "source": "_AddBeneficiaryScreenState",
+        "target": "AddBeneficiaryCubit",
+        "relation": "context.read"
+      },
+      {
+        "source": "BankingDashboardScreen",
+        "target": "BankingDashboardCubit",
+        "relation": "context.read"
+      },
+      {
+        "source": "BankingDashboardScreen",
+        "target": "BankingDashboardCubit",
+        "relation": "context.read"
+      },
+      {
+        "source": "BankingStatisticsScreen",
+        "target": "BankingStatisticsCubit",
+        "relation": "context.read"
+      },
+      {
+        "source": "BankingBillsScreen",
+        "target": "BillsCubit",
+        "relation": "context.read"
+      },
+      {
+        "source": "BankingBillsScreen",
+        "target": "BillsCubit",
+        "relation": "context.read"
+      },
+      {
+        "source": "TransactionsScreen",
+        "target": "TransactionsCubit",
+        "relation": "context.read"
+      },
+      {
+        "source": "_TransferMoneyScreenState",
+        "target": "TransferMoneyCubit",
+        "relation": "context.read"
+      },
+      {
+        "source": "AccountCard",
+        "target": "BankAccount",
+        "relation": "field"
+      },
+      {
+        "source": "BankingDashboardScreenBody",
+        "target": "DashboardData",
+        "relation": "field"
+      },
+      {
+        "source": "TransactionItem",
+        "target": "BankingTransaction",
+        "relation": "field"
+      },
+      {
+        "source": "EcommerceHomeScreen",
+        "target": "EcommerceHomeCubit",
+        "relation": "context.read"
+      },
+      {
+        "source": "EcommerceHomeScreen",
+        "target": "EcommerceHomeCubit",
+        "relation": "context.read"
+      },
+      {
+        "source": "EcommerceHomeScreenBody",
+        "target": "EcommerceHomeData",
+        "relation": "field"
+      },
+      {
+        "source": "ProductDetailsScreen",
+        "target": "ProductDetailsCubit",
+        "relation": "context.read"
+      },
+      {
+        "source": "ProductDetailsScreen",
+        "target": "ProductDetailsCubit",
+        "relation": "context.read"
+      },
+      {
+        "source": "ProductDetailsScreenBody",
+        "target": "ProductDetails",
+        "relation": "field"
+      },
+      {
+        "source": "ProductInfoSection",
+        "target": "ProductDetails",
+        "relation": "field"
+      },
+      {
+        "source": "ProfileScreenBody",
+        "target": "UserProfile",
+        "relation": "field"
+      }
+    ]
+  },
+  "domain": {
+    "nodes": [
+      {
+        "name": "AppBlocObserver",
+        "role": "cubit",
+        "modifiers": {},
+        "superclass": "BlocObserver",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Set<BlocBase>",
+            "name": "_aliveBlocs",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "onCreate",
+            "returnType": "void",
+            "parameters": [
+              "BlocBase bloc"
+            ]
+          },
+          {
+            "name": "onChange",
+            "returnType": "void",
+            "parameters": [
+              "BlocBase bloc",
+              "Change change"
+            ]
+          },
+          {
+            "name": "onTransition",
+            "returnType": "void",
+            "parameters": [
+              "Bloc bloc",
+              "Transition transition"
+            ]
+          },
+          {
+            "name": "onError",
+            "returnType": "void",
+            "parameters": [
+              "BlocBase bloc",
+              "Object error",
+              "StackTrace stackTrace"
+            ]
+          },
+          {
+            "name": "onClose",
+            "returnType": "void",
+            "parameters": [
+              "BlocBase<dynamic> bloc"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "UserModel",
+        "role": "model",
+        "modifiers": {},
+        "superclass": "User",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Map<String, dynamic>",
+            "name": "json",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "toJson",
+            "returnType": "Map<String, dynamic>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "ForgetPasswordUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "AuthRepository",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "AuthRepository",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "call",
+            "returnType": "Future<Either<Failure, String>>",
+            "parameters": [
+              "String email"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "LoginUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "AuthRepository",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "AuthRepository",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "call",
+            "returnType": "Future<Either<Failure, User>>",
+            "parameters": [
+              "String email",
+              "String password"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "RegisterUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "dynamic",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "dynamic",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": []
+      },
+      {
+        "name": "AuthCubit",
+        "role": "cubit",
+        "modifiers": {},
+        "superclass": "Cubit<AuthState>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "LoginUseCase",
+            "name": "loginUseCase",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "RegisterUseCase",
+            "name": "registerUseCase",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "ForgetPasswordUseCase",
+            "name": "forgetPasswordUseCase",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "login",
+            "returnType": "Future<void>",
+            "parameters": [
+              "String email",
+              "String password"
+            ]
+          },
+          {
+            "name": "forgetPassword",
+            "returnType": "Future<void>",
+            "parameters": [
+              "String email"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "BankingStatisticsModel",
+        "role": "model",
+        "modifiers": {},
+        "superclass": "BankingStatistics",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Map<String, dynamic>",
+            "name": "json",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": []
+      },
+      {
+        "name": "BankAccountModel",
+        "role": "model",
+        "modifiers": {},
+        "superclass": "BankAccount",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Map<String, dynamic>",
+            "name": "json",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": []
+      },
+      {
+        "name": "BeneficiaryModel",
+        "role": "model",
+        "modifiers": {},
+        "superclass": "Beneficiary",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Map<String, dynamic>",
+            "name": "json",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": []
+      },
+      {
+        "name": "BillModel",
+        "role": "model",
+        "modifiers": {},
+        "superclass": "Bill",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Map<String, dynamic>",
+            "name": "json",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": []
+      },
+      {
+        "name": "DashboardDataModel",
+        "role": "model",
+        "modifiers": {},
+        "superclass": "DashboardData",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Map<String, dynamic>",
+            "name": "json",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": []
+      },
+      {
+        "name": "BankingTransactionModel",
+        "role": "model",
+        "modifiers": {},
+        "superclass": "BankingTransaction",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Map<String, dynamic>",
+            "name": "json",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": []
+      },
+      {
+        "name": "AddBeneficiaryUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "call",
+            "returnType": "Future<Either<Failure, String>>",
+            "parameters": [
+              "Beneficiary beneficiary"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "GetBankingDashboardUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "call",
+            "returnType": "Future<Either<Failure, DashboardData>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "GetBankingStatisticsUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "call",
+            "returnType": "Future<Either<Failure, BankingStatistics>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "GetBeneficiariesUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "call",
+            "returnType": "Future<Either<Failure, List<Beneficiary>>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "GetBillsUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "call",
+            "returnType": "Future<Either<Failure, List<Bill>>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "GetTransactionsUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "call",
+            "returnType": "Future<Either<Failure, List<BankingTransaction>>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "GetTransactionDetailsUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "call",
+            "returnType": "Future<Either<Failure, BankingTransaction>>",
+            "parameters": [
+              "int id"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "PayBillUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "call",
+            "returnType": "Future<Either<Failure, String>>",
+            "parameters": [
+              "int billId"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "TransferMoneyUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "BankingRepository",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "call",
+            "returnType": "Future<Either<Failure, String>>",
+            "parameters": [
+              "double amount",
+              "String toAccount"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "AddBeneficiaryCubit",
+        "role": "cubit",
+        "modifiers": {},
+        "superclass": "Cubit<AddBeneficiaryState>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "AddBeneficiaryUseCase",
+            "name": "addBeneficiaryUseCase",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "addBeneficiary",
+            "returnType": "Future<void>",
+            "parameters": [
+              "Beneficiary beneficiary"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "BankingDashboardCubit",
+        "role": "cubit",
+        "modifiers": {},
+        "superclass": "Cubit<BankingDashboardState>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "GetBankingDashboardUseCase",
+            "name": "getBankingDashboardUseCase",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "fetchDashboard",
+            "returnType": "Future<void>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "BankingStatisticsCubit",
+        "role": "cubit",
+        "modifiers": {},
+        "superclass": "Cubit<BankingStatisticsState>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "GetBankingStatisticsUseCase",
+            "name": "getBankingStatisticsUseCase",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "fetchStatistics",
+            "returnType": "Future<void>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "BillsCubit",
+        "role": "cubit",
+        "modifiers": {},
+        "superclass": "Cubit<BillsState>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "GetBillsUseCase",
+            "name": "getBillsUseCase",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "PayBillUseCase",
+            "name": "payBillUseCase",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "List<Bill>",
+            "name": "_currentBills",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "fetchBills",
+            "returnType": "Future<void>",
+            "parameters": []
+          },
+          {
+            "name": "payBill",
+            "returnType": "Future<void>",
+            "parameters": [
+              "int billId"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "TransactionsCubit",
+        "role": "cubit",
+        "modifiers": {},
+        "superclass": "Cubit<TransactionsState>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "GetTransactionsUseCase",
+            "name": "getTransactionsUseCase",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "fetchTransactions",
+            "returnType": "Future<void>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "TransactionDetailsCubit",
+        "role": "cubit",
+        "modifiers": {},
+        "superclass": "Cubit<TransactionDetailsState>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "GetTransactionDetailsUseCase",
+            "name": "getTransactionDetailsUseCase",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "fetchTransactionDetails",
+            "returnType": "Future<void>",
+            "parameters": [
+              "int id"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "TransferMoneyCubit",
+        "role": "cubit",
+        "modifiers": {},
+        "superclass": "Cubit<TransferMoneyState>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "TransferMoneyUseCase",
+            "name": "transferMoneyUseCase",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "transferMoney",
+            "returnType": "Future<void>",
+            "parameters": [
+              "double amount",
+              "String toAccount"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "CategoryModel",
+        "role": "model",
+        "modifiers": {},
+        "superclass": "Category",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Map<String, dynamic>",
+            "name": "json",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": []
+      },
+      {
+        "name": "EcommerceHomeDataModel",
+        "role": "model",
+        "modifiers": {},
+        "superclass": "EcommerceHomeData",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Map<String, dynamic>",
+            "name": "json",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": []
+      },
+      {
+        "name": "ProductModel",
+        "role": "model",
+        "modifiers": {},
+        "superclass": "Product",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Map<String, dynamic>",
+            "name": "json",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": []
+      },
+      {
+        "name": "PromoBannerModel",
+        "role": "model",
+        "modifiers": {},
+        "superclass": "PromoBanner",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Map<String, dynamic>",
+            "name": "json",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": []
+      },
+      {
+        "name": "GetEcommerceHomeUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "EcommerceHomeRepository",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "EcommerceHomeRepository",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "call",
+            "returnType": "Future<Either<Failure, EcommerceHomeData>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "EcommerceHomeCubit",
+        "role": "cubit",
+        "modifiers": {},
+        "superclass": "Cubit<EcommerceHomeState>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "GetEcommerceHomeUseCase",
+            "name": "getEcommerceHomeUseCase",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "fetchHomeData",
+            "returnType": "Future<void>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "BranchModel",
+        "role": "model",
+        "modifiers": {},
+        "superclass": "Branch",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Map<String, dynamic>",
+            "name": "json",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": []
+      },
+      {
+        "name": "GetNearbyBranchesUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "HomeRepository",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "HomeRepository",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "call",
+            "returnType": "Future<Either<Failure, List<Branch>>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "HomeCubit",
+        "role": "cubit",
+        "modifiers": {},
+        "superclass": "Cubit<HomeState>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "GetNearbyBranchesUseCase",
+            "name": "getNearbyBranchesUseCase",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "fetchNearbyBranches",
+            "returnType": "Future<void>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "NotificationModel",
+        "role": "model",
+        "modifiers": {},
+        "superclass": "AppNotification",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Map<String, dynamic>",
+            "name": "json",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": []
+      },
+      {
+        "name": "GetNotificationsUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "NotificationsRepository",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "NotificationsRepository",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "call",
+            "returnType": "Future<Either<Failure, List<AppNotification>>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "NotificationsCubit",
+        "role": "cubit",
+        "modifiers": {},
+        "superclass": "Cubit<NotificationsState>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "GetNotificationsUseCase",
+            "name": "getNotificationsUseCase",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "fetchNotifications",
+            "returnType": "Future<void>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "ProductDetailsModel",
+        "role": "model",
+        "modifiers": {},
+        "superclass": "ProductDetails",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Map<String, dynamic>",
+            "name": "json",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": []
+      },
+      {
+        "name": "GetProductDetailsUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "ProductDetailsRepository",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "ProductDetailsRepository",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "call",
+            "returnType": "Future<Either<Failure, ProductDetails>>",
+            "parameters": [
+              "int productId"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ProductDetailsCubit",
+        "role": "cubit",
+        "modifiers": {},
+        "superclass": "Cubit<ProductDetailsState>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "GetProductDetailsUseCase",
+            "name": "getProductDetailsUseCase",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "fetchProductDetails",
+            "returnType": "Future<void>",
+            "parameters": [
+              "int productId"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ProfileModel",
+        "role": "model",
+        "modifiers": {},
+        "superclass": "UserProfile",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Map<String, dynamic>",
+            "name": "json",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": []
+      },
+      {
+        "name": "GetProfileUseCase",
+        "role": "useCase",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "ProfileRepository",
+            "name": "repository",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "ProfileRepository",
+            "name": "repository",
+            "injectionMethod": "constructor"
+          }
+        ],
+        "methods": [
+          {
+            "name": "call",
+            "returnType": "Future<Either<Failure, UserProfile>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "ProfileCubit",
+        "role": "cubit",
+        "modifiers": {},
+        "superclass": "Cubit<ProfileState>",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "GetProfileUseCase",
+            "name": "getProfileUseCase",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "fetchProfile",
+            "returnType": "Future<void>",
+            "parameters": []
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": "UserModel",
+        "target": "User",
+        "relation": "extends"
+      },
+      {
+        "source": "ForgetPasswordUseCase",
+        "target": "AuthRepository",
+        "relation": "field"
+      },
+      {
+        "source": "ForgetPasswordUseCase",
+        "target": "AuthRepository",
+        "relation": "constructor"
+      },
+      {
+        "source": "LoginUseCase",
+        "target": "AuthRepository",
+        "relation": "field"
+      },
+      {
+        "source": "LoginUseCase",
+        "target": "AuthRepository",
+        "relation": "constructor"
+      },
+      {
+        "source": "AuthCubit",
+        "target": "LoginUseCase",
+        "relation": "field"
+      },
+      {
+        "source": "AuthCubit",
+        "target": "RegisterUseCase",
+        "relation": "field"
+      },
+      {
+        "source": "AuthCubit",
+        "target": "ForgetPasswordUseCase",
+        "relation": "field"
+      },
+      {
+        "source": "BankingStatisticsModel",
+        "target": "BankingStatistics",
+        "relation": "extends"
+      },
+      {
+        "source": "BankAccountModel",
+        "target": "BankAccount",
+        "relation": "extends"
+      },
+      {
+        "source": "BeneficiaryModel",
+        "target": "Beneficiary",
+        "relation": "extends"
+      },
+      {
+        "source": "BillModel",
+        "target": "Bill",
+        "relation": "extends"
+      },
+      {
+        "source": "DashboardDataModel",
+        "target": "DashboardData",
+        "relation": "extends"
+      },
+      {
+        "source": "BankingTransactionModel",
+        "target": "BankingTransaction",
+        "relation": "extends"
+      },
+      {
+        "source": "AddBeneficiaryUseCase",
+        "target": "BankingRepository",
+        "relation": "field"
+      },
+      {
+        "source": "AddBeneficiaryUseCase",
+        "target": "BankingRepository",
+        "relation": "constructor"
+      },
+      {
+        "source": "GetBankingDashboardUseCase",
+        "target": "BankingRepository",
+        "relation": "field"
+      },
+      {
+        "source": "GetBankingDashboardUseCase",
+        "target": "BankingRepository",
+        "relation": "constructor"
+      },
+      {
+        "source": "GetBankingStatisticsUseCase",
+        "target": "BankingRepository",
+        "relation": "field"
+      },
+      {
+        "source": "GetBankingStatisticsUseCase",
+        "target": "BankingRepository",
+        "relation": "constructor"
+      },
+      {
+        "source": "GetBeneficiariesUseCase",
+        "target": "BankingRepository",
+        "relation": "field"
+      },
+      {
+        "source": "GetBeneficiariesUseCase",
+        "target": "BankingRepository",
+        "relation": "constructor"
+      },
+      {
+        "source": "GetBillsUseCase",
+        "target": "BankingRepository",
+        "relation": "field"
+      },
+      {
+        "source": "GetBillsUseCase",
+        "target": "BankingRepository",
+        "relation": "constructor"
+      },
+      {
+        "source": "GetTransactionsUseCase",
+        "target": "BankingRepository",
+        "relation": "field"
+      },
+      {
+        "source": "GetTransactionsUseCase",
+        "target": "BankingRepository",
+        "relation": "constructor"
+      },
+      {
+        "source": "GetTransactionDetailsUseCase",
+        "target": "BankingRepository",
+        "relation": "field"
+      },
+      {
+        "source": "GetTransactionDetailsUseCase",
+        "target": "BankingRepository",
+        "relation": "constructor"
+      },
+      {
+        "source": "PayBillUseCase",
+        "target": "BankingRepository",
+        "relation": "field"
+      },
+      {
+        "source": "PayBillUseCase",
+        "target": "BankingRepository",
+        "relation": "constructor"
+      },
+      {
+        "source": "TransferMoneyUseCase",
+        "target": "BankingRepository",
+        "relation": "field"
+      },
+      {
+        "source": "TransferMoneyUseCase",
+        "target": "BankingRepository",
+        "relation": "constructor"
+      },
+      {
+        "source": "AddBeneficiaryCubit",
+        "target": "AddBeneficiaryUseCase",
+        "relation": "field"
+      },
+      {
+        "source": "BankingDashboardCubit",
+        "target": "GetBankingDashboardUseCase",
+        "relation": "field"
+      },
+      {
+        "source": "BankingStatisticsCubit",
+        "target": "GetBankingStatisticsUseCase",
+        "relation": "field"
+      },
+      {
+        "source": "BillsCubit",
+        "target": "GetBillsUseCase",
+        "relation": "field"
+      },
+      {
+        "source": "BillsCubit",
+        "target": "PayBillUseCase",
+        "relation": "field"
+      },
+      {
+        "source": "TransactionsCubit",
+        "target": "GetTransactionsUseCase",
+        "relation": "field"
+      },
+      {
+        "source": "TransactionDetailsCubit",
+        "target": "GetTransactionDetailsUseCase",
+        "relation": "field"
+      },
+      {
+        "source": "TransferMoneyCubit",
+        "target": "TransferMoneyUseCase",
+        "relation": "field"
+      },
+      {
+        "source": "CategoryModel",
+        "target": "Category",
+        "relation": "extends"
+      },
+      {
+        "source": "EcommerceHomeDataModel",
+        "target": "EcommerceHomeData",
+        "relation": "extends"
+      },
+      {
+        "source": "ProductModel",
+        "target": "Product",
+        "relation": "extends"
+      },
+      {
+        "source": "PromoBannerModel",
+        "target": "PromoBanner",
+        "relation": "extends"
+      },
+      {
+        "source": "GetEcommerceHomeUseCase",
+        "target": "EcommerceHomeRepository",
+        "relation": "field"
+      },
+      {
+        "source": "GetEcommerceHomeUseCase",
+        "target": "EcommerceHomeRepository",
+        "relation": "constructor"
+      },
+      {
+        "source": "EcommerceHomeCubit",
+        "target": "GetEcommerceHomeUseCase",
+        "relation": "field"
+      },
+      {
+        "source": "BranchModel",
+        "target": "Branch",
+        "relation": "extends"
+      },
+      {
+        "source": "GetNearbyBranchesUseCase",
+        "target": "HomeRepository",
+        "relation": "field"
+      },
+      {
+        "source": "GetNearbyBranchesUseCase",
+        "target": "HomeRepository",
+        "relation": "constructor"
+      },
+      {
+        "source": "HomeCubit",
+        "target": "GetNearbyBranchesUseCase",
+        "relation": "field"
+      },
+      {
+        "source": "NotificationModel",
+        "target": "AppNotification",
+        "relation": "extends"
+      },
+      {
+        "source": "GetNotificationsUseCase",
+        "target": "NotificationsRepository",
+        "relation": "field"
+      },
+      {
+        "source": "GetNotificationsUseCase",
+        "target": "NotificationsRepository",
+        "relation": "constructor"
+      },
+      {
+        "source": "NotificationsCubit",
+        "target": "GetNotificationsUseCase",
+        "relation": "field"
+      },
+      {
+        "source": "ProductDetailsModel",
+        "target": "ProductDetails",
+        "relation": "extends"
+      },
+      {
+        "source": "GetProductDetailsUseCase",
+        "target": "ProductDetailsRepository",
+        "relation": "field"
+      },
+      {
+        "source": "GetProductDetailsUseCase",
+        "target": "ProductDetailsRepository",
+        "relation": "constructor"
+      },
+      {
+        "source": "ProductDetailsCubit",
+        "target": "GetProductDetailsUseCase",
+        "relation": "field"
+      },
+      {
+        "source": "ProfileModel",
+        "target": "UserProfile",
+        "relation": "extends"
+      },
+      {
+        "source": "GetProfileUseCase",
+        "target": "ProfileRepository",
+        "relation": "field"
+      },
+      {
+        "source": "GetProfileUseCase",
+        "target": "ProfileRepository",
+        "relation": "constructor"
+      },
+      {
+        "source": "ProfileCubit",
+        "target": "GetProfileUseCase",
+        "relation": "field"
+      }
+    ]
+  },
+  "data": {
+    "nodes": [
+      {
+        "name": "NetworkService",
+        "role": "service",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "Dio",
+            "name": "dio",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "Dio",
+            "name": "dio",
+            "injectionMethod": "constructor"
+          },
+          {
+            "type": "Duration",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Duration",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          },
+          {
+            "type": "Left",
+            "injectionMethod": "usage"
+          }
+        ],
+        "methods": [
+          {
+            "name": "addInterceptors",
+            "returnType": "void",
+            "parameters": []
+          },
+          {
+            "name": "addHeaders",
+            "returnType": "void",
+            "parameters": []
+          },
+          {
+            "name": "addToken",
+            "returnType": "void",
+            "parameters": [
+              "String token"
+            ]
+          },
+          {
+            "name": "removeToken",
+            "returnType": "void",
+            "parameters": []
+          },
+          {
+            "name": "postData",
+            "returnType": "Future<Either<Failure, dynamic>>",
+            "parameters": [
+              "required String endPoint",
+              "Map<String, dynamic>? data",
+              "Map<String, dynamic>? queryParameters",
+              "String? token",
+              "bool isRaw = true"
+            ]
+          },
+          {
+            "name": "postEncryptedData",
+            "returnType": "Future<Either<Failure, dynamic>>",
+            "parameters": [
+              "required String endPoint",
+              "Map<String, dynamic>? data",
+              "Map<String, dynamic>? queryParameters",
+              "String? token",
+              "bool isRaw = true"
+            ]
+          },
+          {
+            "name": "uploadFile",
+            "returnType": "Future<Either<Failure, dynamic>>",
+            "parameters": [
+              "required String endPoint",
+              "required FormData formData",
+              "Map<String, dynamic>? queryParameters",
+              "String? token"
+            ]
+          },
+          {
+            "name": "downloadFile",
+            "returnType": "Future<Either<String, dynamic>>",
+            "parameters": [
+              "required String fileUrl",
+              "required String savePath",
+              "Map<String, dynamic>? queryParameters",
+              "String? token"
+            ]
+          },
+          {
+            "name": "putData",
+            "returnType": "Future<Either<Failure, dynamic>>",
+            "parameters": [
+              "required String endPoint",
+              "Map<String, dynamic>? data",
+              "Map<String, dynamic>? queryParameters",
+              "String? token"
+            ]
+          },
+          {
+            "name": "patchData",
+            "returnType": "Future<Either<String, dynamic>>",
+            "parameters": [
+              "required String endPoint",
+              "Map<String, dynamic>? data",
+              "Map<String, dynamic>? queryParameters",
+              "String? token",
+              "bool isRaw = true"
+            ]
+          },
+          {
+            "name": "deleteData",
+            "returnType": "Future<Either<String, dynamic>>",
+            "parameters": [
+              "required String endPoint",
+              "Map<String, dynamic>? data",
+              "Map<String, dynamic>? queryParameters",
+              "String? token"
+            ]
+          },
+          {
+            "name": "getData",
+            "returnType": "Future<Either<Failure, dynamic>>",
+            "parameters": [
+              "required String endPoint",
+              "Map<String, dynamic>? queryParameters",
+              "String? token"
+            ]
+          },
+          {
+            "name": "handleDioExceoptions",
+            "returnType": "Left<Failure, dynamic>",
+            "parameters": [
+              "DioException e"
+            ]
+          },
+          {
+            "name": "hmacSha256",
+            "returnType": "String",
+            "parameters": [
+              "String data"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "AuthRemoteDataSource",
+        "role": "datasource",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "login",
+            "returnType": "Future<Either<Failure, UserModel>>",
+            "parameters": [
+              "String email",
+              "String password"
+            ]
+          },
+          {
+            "name": "forgetPassword",
+            "returnType": "Future<Either<Failure, String>>",
+            "parameters": [
+              "String email"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "AuthRepository",
+        "role": "repository",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "login",
+            "returnType": "Future<Either<Failure, User>>",
+            "parameters": [
+              "String email",
+              "String password"
+            ]
+          },
+          {
+            "name": "forgetPassword",
+            "returnType": "Future<Either<Failure, String>>",
+            "parameters": [
+              "String email"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "BankingRemoteDataSource",
+        "role": "datasource",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "getDashboardData",
+            "returnType": "Future<Either<Failure, DashboardDataModel>>",
+            "parameters": []
+          },
+          {
+            "name": "getTransactions",
+            "returnType": "Future<Either<Failure, List<BankingTransactionModel>>>",
+            "parameters": []
+          },
+          {
+            "name": "getTransactionDetails",
+            "returnType": "Future<Either<Failure, BankingTransactionModel>>",
+            "parameters": [
+              "int id"
+            ]
+          },
+          {
+            "name": "transferMoney",
+            "returnType": "Future<Either<Failure, String>>",
+            "parameters": [
+              "double amount",
+              "String toAccount"
+            ]
+          },
+          {
+            "name": "addBeneficiary",
+            "returnType": "Future<Either<Failure, String>>",
+            "parameters": [
+              "BeneficiaryModel beneficiary"
+            ]
+          },
+          {
+            "name": "getBeneficiaries",
+            "returnType": "Future<Either<Failure, List<BeneficiaryModel>>>",
+            "parameters": []
+          },
+          {
+            "name": "payBill",
+            "returnType": "Future<Either<Failure, String>>",
+            "parameters": [
+              "int billId"
+            ]
+          },
+          {
+            "name": "getBills",
+            "returnType": "Future<Either<Failure, List<BillModel>>>",
+            "parameters": []
+          },
+          {
+            "name": "getStatistics",
+            "returnType": "Future<Either<Failure, BankingStatisticsModel>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "BankingRepository",
+        "role": "repository",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "getDashboardData",
+            "returnType": "Future<Either<Failure, DashboardData>>",
+            "parameters": []
+          },
+          {
+            "name": "getTransactions",
+            "returnType": "Future<Either<Failure, List<BankingTransaction>>>",
+            "parameters": []
+          },
+          {
+            "name": "getTransactionDetails",
+            "returnType": "Future<Either<Failure, BankingTransaction>>",
+            "parameters": [
+              "int id"
+            ]
+          },
+          {
+            "name": "transferMoney",
+            "returnType": "Future<Either<Failure, String>>",
+            "parameters": [
+              "double amount",
+              "String toAccount"
+            ]
+          },
+          {
+            "name": "addBeneficiary",
+            "returnType": "Future<Either<Failure, String>>",
+            "parameters": [
+              "Beneficiary beneficiary"
+            ]
+          },
+          {
+            "name": "getBeneficiaries",
+            "returnType": "Future<Either<Failure, List<Beneficiary>>>",
+            "parameters": []
+          },
+          {
+            "name": "payBill",
+            "returnType": "Future<Either<Failure, String>>",
+            "parameters": [
+              "int billId"
+            ]
+          },
+          {
+            "name": "getBills",
+            "returnType": "Future<Either<Failure, List<Bill>>>",
+            "parameters": []
+          },
+          {
+            "name": "getStatistics",
+            "returnType": "Future<Either<Failure, BankingStatistics>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "EcommerceHomeRemoteDataSource",
+        "role": "datasource",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "getEcommerceHome",
+            "returnType": "Future<Either<Failure, EcommerceHomeDataModel>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "EcommerceHomeRepository",
+        "role": "repository",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "getEcommerceHome",
+            "returnType": "Future<Either<Failure, EcommerceHomeData>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "HomeRemoteDataSource",
+        "role": "datasource",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "getNearbyBranches",
+            "returnType": "Future<Either<Failure, List<BranchModel>>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "HomeRepository",
+        "role": "repository",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "getNearbyBranches",
+            "returnType": "Future<Either<Failure, List<Branch>>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "NotificationsRemoteDataSource",
+        "role": "datasource",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "getNotifications",
+            "returnType": "Future<Either<Failure, List<NotificationModel>>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "NotificationsRepository",
+        "role": "repository",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "getNotifications",
+            "returnType": "Future<Either<Failure, List<AppNotification>>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "ProductDetailsRemoteDataSource",
+        "role": "datasource",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "getProductDetails",
+            "returnType": "Future<Either<Failure, ProductDetailsModel>>",
+            "parameters": [
+              "int productId"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ProductDetailsRepository",
+        "role": "repository",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "getProductDetails",
+            "returnType": "Future<Either<Failure, ProductDetails>>",
+            "parameters": [
+              "int productId"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ProfileRemoteDataSource",
+        "role": "datasource",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "getProfile",
+            "returnType": "Future<Either<Failure, ProfileModel>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "ProfileRepository",
+        "role": "repository",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [],
+        "methods": [
+          {
+            "name": "getProfile",
+            "returnType": "Future<Either<Failure, UserProfile>>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "ConstantResource",
+        "role": "datasource",
+        "modifiers": {},
+        "superclass": "FrameworkResource",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "String",
+            "name": "type",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String",
+            "name": "value",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String",
+            "name": "declaringElement",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "toJson",
+            "returnType": "Map<String, dynamic>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "FrameworkResource",
+        "role": "datasource",
+        "modifiers": {},
+        "superclass": null,
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "String",
+            "name": "resourceType",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String",
+            "name": "name",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String",
+            "name": "sourceFile",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "List<String>",
+            "name": "usedBy",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "List<String>",
+            "name": "uses",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "toJson",
+            "returnType": "Map<String, dynamic>",
+            "parameters": []
+          }
+        ]
+      },
+      {
+        "name": "TypographyResource",
+        "role": "datasource",
+        "modifiers": {},
+        "superclass": "FrameworkResource",
+        "interfaces": [],
+        "mixins": [],
+        "dependencies": [
+          {
+            "type": "num?",
+            "name": "fontSize",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String?",
+            "name": "fontWeight",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String?",
+            "name": "fontFamily",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "num?",
+            "name": "letterSpacing",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "num?",
+            "name": "height",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String?",
+            "name": "color",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String?",
+            "name": "fontStyle",
+            "injectionMethod": "field"
+          },
+          {
+            "type": "String?",
+            "name": "decoration",
+            "injectionMethod": "field"
+          }
+        ],
+        "methods": [
+          {
+            "name": "toJson",
+            "returnType": "Map<String, dynamic>",
+            "parameters": []
+          }
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": "ConstantResource",
+        "target": "FrameworkResource",
+        "relation": "extends"
+      },
+      {
+        "source": "TypographyResource",
+        "target": "FrameworkResource",
+        "relation": "extends"
+      }
+    ]
+  }
+}

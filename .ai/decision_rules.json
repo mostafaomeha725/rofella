@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "framework_version": "2.0",
+  "generated_at": "2026-08-04T14:59:58.424836",
+  "generator_version": "1.0",
+  "generated_by": "Flutter AI Framework",
+  "overview": "Framework-First Decision Rules",
+  "rules": [
+    {
+      "rejected": "Text",
+      "reason": "Framework provides AppText."
+    },
+    {
+      "rejected": "SnackBar",
+      "reason": "Framework provides EasyLoading."
+    },
+    {
+      "rejected": "TextButton",
+      "reason": "Framework provides BounceIt or AppButton."
+    },
+    {
+      "rejected": "ElevatedButton",
+      "reason": "Framework provides AppButton."
+    },
+    {
+      "rejected": "Image.network",
+      "reason": "Framework provides AppImage."
+    },
+    {
+      "rejected": "TextFormField",
+      "reason": "Framework provides AppFormField."
+    },
+    {
+      "rejected": "Dio.post() or raw HTTP calls",
+      "reason": "Framework provides NetworkService."
+    },
+    {
+      "rejected": "TextStyle()",
+      "reason": "Framework provides font getters in styles.dart."
+    },
+    {
+      "rejected": "Hardcoded literals (Strings/Numbers/Paths)",
+      "reason": "Framework provides Constant classes and Enums. Reuse them."
+    }
+  ]
+}

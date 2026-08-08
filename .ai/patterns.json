@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "framework_version": "2.0",
+  "generated_at": "2026-08-04T14:55:24.865708",
+  "generator_version": "1.0",
+  "generated_by": "Flutter AI Framework",
+  "overview": "Dynamically extracted implementation patterns",
+  "architecture_flow": [
+    {
+      "pattern": "Screen -> ScreenBody -> Custom Widgets\\nRULE: Every ScreenBody MUST be generated inside presentation/screens/widgets/",
+      "confidence": "100%",
+      "detected_in": [
+        "lib/features/auth/presentation/screens/widgets/forget_password",
+        "lib/features/auth/presentation/screens/widgets/login",
+        "lib/features/banking/presentation/screens/widgets/banking_dashboard",
+        "lib/features/ecommerce_home/presentation/screens/widgets/ecommerce_home",
+        "lib/features/home/presentation/screens/widgets/home",
+        "lib/features/notifications/presentation/screens/widgets/notifications",
+        "lib/features/product_details/presentation/screens/widgets/product_details",
+        "lib/features/profile/presentation/screens/widgets/profile"
+      ]
+    },
+    {
+      "pattern": "Cubit -> UseCase -> Repository -> Datasource",
+      "confidence": "100%",
+      "detected_in": [
+        "auth",
+        "addbeneficiary",
+        "bankingdashboard",
+        "bankingstatistics",
+        "bills",
+        "transactions",
+        "transactiondetails",
+        "transfermoney",
+        "ecommercehome",
+        "home",
+        "notifications",
+        "productdetails",
+        "profile"
+      ]
+    },
+    {
+      "pattern": "Form -> AppFormField -> Validation -> Cubit",
+      "confidence": "100%",
+      "detected_in": [
+        "AppFormField"
+      ]
+    }
+  ]
+}

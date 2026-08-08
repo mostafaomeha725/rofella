@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "framework_version": "2.0",
+  "generated_at": "2026-08-04T14:59:58.603862",
+  "generator_version": "1.0",
+  "generated_by": "Flutter AI Framework",
+  "overview": "Mandatory Validation Rules Pipeline",
+  "rules": [
+    {
+      "id": "large_cubit",
+      "severity": "error",
+      "description": "A Cubit contains multiple unrelated user flows.",
+      "auto_fix": true,
+      "fix_strategy": "Split into one Cubit per independent user flow inside presentation/cubits/<flow>/."
+    },
+    {
+      "id": "flutter_default_widgets",
+      "severity": "error",
+      "description": "Usage of raw Flutter widgets like Text, TextButton, ElevatedButton, OutlinedButton, TextFormField, Image.asset, Image.network, SnackBar.",
+      "auto_fix": true,
+      "fix_strategy": "Replace with framework counterparts (AppText, AppButton, AppFormField, AppImage, EasyLoading, etc.)."
+    },
+    {
+      "id": "hardcoded_strings_numbers",
+      "severity": "error",
+      "description": "Hardcoded string literals or numbers found in UI or logic.",
+      "auto_fix": true,
+      "fix_strategy": "Extract to a constant or reuse an existing constant from the framework."
+    },
+    {
+      "id": "hardcoded_api_endpoints",
+      "severity": "error",
+      "description": "API endpoints as raw strings.",
+      "auto_fix": true,
+      "fix_strategy": "Use EndPoints constants."
+    },
+    {
+      "id": "manual_textstyle_creation",
+      "severity": "error",
+      "description": "Creating new TextStyle objects instead of using predefined typography getters.",
+      "auto_fix": true,
+      "fix_strategy": "Use the closest typography getter and apply .copyWith(color: ...) if needed."
+    },
+    {
+      "id": "duplicate_classes",
+      "severity": "error",
+      "description": "A class with the same name and responsibility already exists.",
+      "auto_fix": false,
+      "fix_strategy": "Refactor to reuse the existing class."
+    },
+    {
+      "id": "duplicate_getit_registrations",
+      "severity": "error",
+      "description": "Multiple or conflicting registrations in GetIt (services_locator.dart).",
+      "auto_fix": true,
+      "fix_strategy": "Consolidate the registrations."
+    },
+    {
+      "id": "folder_structure_violations",
+      "severity": "error",
+      "description": "Files placed outside their designated layer/folder according to Clean Architecture.",
+      "auto_fix": true,
+      "fix_strategy": "Move files to correct folders (e.g., UI to presentation/screens/widgets)."
+    },
+    {
+      "id": "responsive_framework_violations",
+      "severity": "error",
+      "description": "Usage of raw SizedBox, raw EdgeInsets, raw Radius, raw Icon size, or raw Container dimensions without the detected responsive system extensions.",
+      "auto_fix": true,
+      "fix_strategy": "Automatically map the raw dimensions to the generic responsive system rules specified in framework.json (e.g. .w, .h, .r)."
+    },
+    {
+      "id": "widget_builder_methods",
+      "severity": "error",
+      "description": "Private UI builder methods are forbidden (e.g. _buildCard).",
+      "auto_fix": true,
+      "fix_strategy": "Extract the method into its own Widget class in a separate file."
+    },
+    {
+      "id": "oversized_screen",
+      "severity": "error",
+      "description": "A screen file exceeds 100 lines.",
+      "auto_fix": true,
+      "fix_strategy": "Extract business UI out of the screen file into screen_body.dart or separate widgets."
+    },
+    {
+      "id": "oversized_body",
+      "severity": "error",
+      "description": "A screen body widget exceeds 150 lines.",
+      "auto_fix": true,
+      "fix_strategy": "Split large UI sections (Column, ListView) into smaller widgets."
+    },
+    {
+      "id": "oversized_widget",
+      "severity": "error",
+      "description": "A widget file exceeds 100 lines.",
+      "auto_fix": true,
+      "fix_strategy": "Split the widget into smaller, more focused reusable widgets."
+    },
+    {
+      "id": "screen_body_inside_screen_file",
+      "severity": "error",
+      "description": "ScreenBody class is defined inside the *_screen.dart file.",
+      "auto_fix": true,
+      "fix_strategy": "Move the ScreenBody to presentation/screens/widgets/*_screen_body.dart."
+    }
+  ]
+}
