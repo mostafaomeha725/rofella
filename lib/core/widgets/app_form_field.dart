@@ -37,6 +37,7 @@ class AppFormField extends StatefulWidget {
     this.readOnly = false,
     this.autofillHints,
     this.contentPadding,
+    this.prefixIconConstraints,
   });
 
   final TextEditingController controller;
@@ -64,6 +65,7 @@ class AppFormField extends StatefulWidget {
   final bool readOnly;
   final Iterable<String>? autofillHints;
   final EdgeInsetsGeometry? contentPadding;
+  final BoxConstraints? prefixIconConstraints;
   final Color? fillColor;
   final Color? borderColor;
 
@@ -108,7 +110,7 @@ class _AppFormFieldState extends State<AppFormField> {
         fillColor: widget.fillColor ?? Colors.white,
         contentPadding: widget.contentPadding ?? EdgeInsets.all(15.h),
         prefixIcon: widget.prefixIcon,
-        prefixIconConstraints: BoxConstraints(minWidth: 40.w, minHeight: 24.h),
+        prefixIconConstraints: widget.prefixIconConstraints ?? BoxConstraints(minWidth: 40.w, minHeight: 24.h),
         suffixIcon: widget.suffixIcon,
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(

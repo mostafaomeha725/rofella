@@ -25,6 +25,7 @@ class AdminAddCategoryScreen extends StatefulWidget {
 class _AdminAddCategoryScreenState extends State<AdminAddCategoryScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
+  final _orderController = TextEditingController();
 
   XFile? _selectedImage;
   String? _existingImageUrl; // For when editing and no new image is selected
@@ -35,6 +36,9 @@ class _AdminAddCategoryScreenState extends State<AdminAddCategoryScreen> {
     if (widget.categoryToEdit != null) {
       _nameController.text = widget.categoryToEdit!.name;
       _existingImageUrl = widget.categoryToEdit!.imageUrl;
+      _orderController.text = widget.categoryToEdit!.order == 9999 
+          ? '' 
+          : widget.categoryToEdit!.order.toString();
     }
   }
 
@@ -94,10 +98,19 @@ class _AdminAddCategoryScreenState extends State<AdminAddCategoryScreen> {
         imageUrl = url;
       }
 
+      String orderText = _orderController.text.trim();
+      // Convert Arabic numerals to English numerals
+      const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+      const englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+      for (int i = 0; i < arabicNumbers.length; i++) {
+        orderText = orderText.replaceAll(arabicNumbers[i], englishNumbers[i]);
+      }
+
       final category = CategoryModel(
         id: isEditing ? widget.categoryToEdit!.id : '', // Maintain existing ID
         name: _nameController.text.trim(),
         imageUrl: imageUrl ?? '',
+        order: int.tryParse(orderText) ?? 9999,
         createdAt: isEditing
             ? widget.categoryToEdit!.createdAt
             : DateTime.now(),
@@ -129,6 +142,7 @@ class _AdminAddCategoryScreenState extends State<AdminAddCategoryScreen> {
 
   void _clearForm() {
     _nameController.clear();
+    _orderController.clear();
     _formKey.currentState?.reset();
     setState(() {
       _selectedImage = null;
@@ -183,6 +197,31 @@ class _AdminAddCategoryScreenState extends State<AdminAddCategoryScreen> {
                           return 'يرجى إدخال اسم التصنيف';
                         }
                         return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    AppFormField(
+                      controller: _orderController,
+                      hintText: 'ترتيب العرض (اختياري - مثلاً: 1 للظهور أولاً)',
+                      keyboardType: TextInputType.number,
+                      autovalidateMode: AutovalidateMode.disabled,
+                      prefixIcon: const Icon(
+                        Icons.format_list_numbered,
+                        color: Colors.grey,
+                      ),
+                      validator: (val) {
+                        if (val != null && val.trim().isNotEmpty) {
+                          String orderText = val.trim();
+                          const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+                          const englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+                          for (int i = 0; i < arabicNumbers.length; i++) {
+                            orderText = orderText.replaceAll(arabicNumbers[i], englishNumbers[i]);
+                          }
+                          if (int.tryParse(orderText) == null) {
+                            return 'يرجى إدخال رقم صحيح';
+                          }
+                        }
+                        return null; // optional, defaults to 9999
                       },
                     ),
 

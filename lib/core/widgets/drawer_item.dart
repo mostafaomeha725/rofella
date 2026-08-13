@@ -34,7 +34,10 @@ class DrawerItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 14.0,
+            ),
             decoration: BoxDecoration(
               color: isSelected ? selectedBgColor : Colors.transparent,
               borderRadius: BorderRadius.circular(12),
@@ -53,21 +56,18 @@ class DrawerItem extends StatelessWidget {
                   ),
                   const SizedBox(width: 16),
                 ] else if (leadingIcon != null) ...[
-                  Icon(
-                    leadingIcon,
-                    color: activeColor,
-                    size: 22,
-                  ),
+                  Icon(leadingIcon, color: activeColor, size: 22),
                   const SizedBox(width: 16),
                 ],
                 Expanded(
                   child: Text(
                     title,
                     style: TextStyle(
-                      fontFamily: 'serif',
                       color: inactiveColor,
                       fontSize: 16,
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                      fontWeight: isSelected
+                          ? FontWeight.w600
+                          : FontWeight.w500,
                     ),
                   ),
                 ),

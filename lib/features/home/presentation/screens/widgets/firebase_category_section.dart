@@ -124,25 +124,29 @@ class _FirebaseCategorySectionState extends State<FirebaseCategorySection> {
             LayoutBuilder(
               builder: (context, constraints) {
                 int crossAxisCount;
+                double childAspectRatio;
                 if (constraints.maxWidth > 1024) {
-                  crossAxisCount = 5;
-                } else if (constraints.maxWidth > 768) {
                   crossAxisCount = 4;
+                  childAspectRatio = 0.75;
+                } else if (constraints.maxWidth > 768) {
+                  crossAxisCount = 3;
+                  childAspectRatio = 0.70;
                 } else {
                   crossAxisCount = 2;
+                  childAspectRatio = 0.60;
                 }
 
                 return GridView.builder(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
+                    horizontal: 8.0,
                     vertical: 16.0,
                   ),
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: crossAxisCount,
-                    childAspectRatio: 0.60,
-                    crossAxisSpacing: 16.0,
+                    childAspectRatio: childAspectRatio,
+                    crossAxisSpacing: 12.0,
                     mainAxisSpacing: 16.0,
                   ),
                   cacheExtent: 0,
@@ -274,10 +278,7 @@ class _StaggeredAnimatedItemState extends State<_StaggeredAnimatedItem>
     }
     return FadeTransition(
       opacity: _fadeAnimation,
-      child: SlideTransition(
-        position: _slideAnimation,
-        child: widget.child,
-      ),
+      child: SlideTransition(position: _slideAnimation, child: widget.child),
     );
   }
 }

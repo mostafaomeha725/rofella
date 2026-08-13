@@ -51,7 +51,6 @@ class CustomDrawerHeader extends StatelessWidget {
                 const Text(
                   'Menu',
                   style: TextStyle(
-                    fontFamily: 'serif',
                     color: Colors.white,
                     fontSize: 22,
                     fontWeight: FontWeight.w400,

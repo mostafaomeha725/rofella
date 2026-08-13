@@ -24,7 +24,7 @@ class CartItemCard extends StatelessWidget {
       onTap: () => context.push(Routes.productDetailsScreen, extra: product),
       child: Container(
         margin: const EdgeInsets.only(bottom: 20.0, left: 16, right: 16),
-        height: 200,
+        height: 225,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(24),
@@ -97,37 +97,102 @@ class CartItemCard extends StatelessWidget {
                               children: [
                                 Text(
                                   'السعر',
-                                  style: font12w400.copyWith(
+                                  style: font16w600.copyWith(
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w600,
-                                    color: Colors.grey.shade500,
-                                    height: 1.2,
+                                    color: Colors.grey[600],
                                   ),
                                 ),
-                                Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.baseline,
-                                  textBaseline: TextBaseline.alphabetic,
-                                  children: [
-                                    Text(
-                                      product.price.toStringAsFixed(2),
-                                      style: font16w600.copyWith(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w900,
-                                        color: Colors.black,
-                                        height: 1.0,
-                                      ),
+                                FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Directionality(
+                                    textDirection: TextDirection.rtl, // Right-to-left layout for Arabic
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        // New Price
+                                        Directionality(
+                                          textDirection: TextDirection.ltr, // Keep EGP and number left-to-right
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                                            textBaseline: TextBaseline.alphabetic,
+                                            children: [
+                                              Text(
+                                                'EGP ',
+                                                style: font16w600.copyWith(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w800,
+                                                  color: const Color(0xFF5C2428),
+                                                ),
+                                              ),
+                                              Text(
+                                                product.price.toInt().toString(),
+                                                style: font16w600.copyWith(
+                                                  fontSize: 24,
+                                                  fontWeight: FontWeight.w900,
+                                                  color: Colors.black,
+                                                  height: 1.0,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        // Old Price
+                                        if (product.oldPrice != null && product.oldPrice! > product.price) ...[
+                                          const SizedBox(width: 8),
+                                          Directionality(
+                                            textDirection: TextDirection.ltr,
+                                            child: Text(
+                                              'EGP ${product.oldPrice!.toInt()}',
+                                              style: font16w600.copyWith(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.grey,
+                                                decoration: TextDecoration.lineThrough,
+                                                height: 1.2,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ],
                                     ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      'ج.م',
-                                      style: font16w600.copyWith(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w800,
-                                        color: const Color(0xFF5C2428),
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
+                                if (product.oldPrice != null && product.oldPrice! > product.price) ...[
+                                  const SizedBox(height: 6),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFFCEEED),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Directionality(
+                                      textDirection: TextDirection.rtl,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            'وفر ${(product.oldPrice! - product.price).toInt()} EGP ',
+                                            style: font12w400.copyWith(
+                                              color: const Color(0xFFE2434B),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 11,
+                                            ),
+                                          ),
+                                          Text(
+                                            '(${(((product.oldPrice! - product.price) / product.oldPrice!) * 100).toInt()}%)',
+                                            textDirection: TextDirection.ltr,
+                                            style: font12w400.copyWith(
+                                              color: const Color(0xFFE2434B),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 11,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ],
                             ),
 

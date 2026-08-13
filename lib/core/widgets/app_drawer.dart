@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop/core/routes/route_paths.dart';
 import 'package:shop/features/admin/data/models/category_model.dart';
-import 'package:shop/features/admin/data/services/firebase_service.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop/features/home/presentation/manager/home_cubit.dart';
 import 'custom_drawer_header.dart';
 import 'drawer_item.dart';
 
@@ -46,17 +46,19 @@ class AppDrawer extends StatelessWidget {
                 const SizedBox(height: 8),
 
                 // Dynamic Categories
-                StreamBuilder<List<CategoryModel>>(
-                  stream: FirebaseService().getCategories(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
+                BlocBuilder<HomeCubit, HomeState>(
+                  builder: (context, state) {
+                    if (state is HomeLoading || state is HomeInitial) {
                       return const Padding(
                         padding: EdgeInsets.all(16.0),
                         child: Center(child: CircularProgressIndicator()),
                       );
                     }
 
-                    final categories = snapshot.data ?? [];
+                    List<CategoryModel> categories = [];
+                    if (state is HomeLoaded) {
+                      categories = state.categories;
+                    }
 
                     return Column(
                       children: categories.map((category) {
@@ -64,7 +66,6 @@ class AppDrawer extends StatelessWidget {
                           children: [
                             DrawerItem(
                               title: category.name,
-                              imageUrl: category.imageUrl, // Use image from DB
                               isSelected:
                                   extra ==
                                   category

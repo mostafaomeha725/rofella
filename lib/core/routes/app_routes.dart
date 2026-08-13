@@ -15,11 +15,17 @@ import 'package:shop/features/admin/presentation/screens/add_category_screen.dar
 import 'package:shop/features/admin/presentation/screens/admin_categories_list_screen.dart';
 import 'package:shop/features/admin/presentation/screens/admin_dashboard_screen.dart';
 import 'package:shop/features/admin/presentation/screens/admin_orders_screen.dart';
+import 'package:shop/features/admin/presentation/screens/admin_order_invoice_screen.dart';
+import 'package:shop/features/cart/data/models/order_model.dart';
 import '/core/env.dart';
 import 'route_observer.dart';
 import 'package:shop/features/admin/data/models/product_model.dart';
 import 'package:shop/features/admin/data/models/category_model.dart';
 import 'route_paths.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shop/core/di/services_locator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop/features/admin/presentation/manager/admin_cubit.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -30,6 +36,25 @@ GoRouter createRouter() {
     initialLocation: Routes.homeScreen,
     navigatorKey: navigatorKey,
     debugLogDiagnostics: true,
+    redirect: (context, state) {
+      final prefs = sl<SharedPreferences>();
+      final isAdminLoggedIn = prefs.getBool('is_admin_logged_in') ?? false;
+
+      final isGoingToAdminRoute = state.uri.path.startsWith('/admin');
+      final isGoingToAdminLogin = state.uri.path == Routes.adminLoginScreen;
+
+      if (isGoingToAdminRoute) {
+        if (!isAdminLoggedIn && !isGoingToAdminLogin) {
+          // Unauthenticated user trying to access a protected admin route
+          return Routes.adminLoginScreen;
+        } else if (isAdminLoggedIn && isGoingToAdminLogin) {
+          // Authenticated user trying to access the login screen
+          return Routes.adminDashboardScreen;
+        }
+      }
+
+      return null;
+    },
     observers: [
       if (isDevEnviroment()) ChuckerFlutter.navigatorObserver,
       // customGoRouterObserver,
@@ -82,13 +107,19 @@ GoRouter createRouter() {
       ),
       GoRoute(
         path: Routes.adminDashboardScreen,
-        builder: (context, state) => const AdminDashboardScreen(),
+        builder: (context, state) => BlocProvider(
+          create: (_) => sl<AdminCubit>()..initDashboard(),
+          child: const AdminDashboardScreen(),
+        ),
       ),
       GoRoute(
         path: Routes.adminAddProductScreen,
         builder: (context, state) {
           final productToEdit = state.extra as ProductModel?;
-          return AdminAddProductScreen(productToEdit: productToEdit);
+          return BlocProvider(
+            create: (_) => sl<AdminCubit>()..initCategories(),
+            child: AdminAddProductScreen(productToEdit: productToEdit),
+          );
         },
       ),
       GoRoute(
@@ -100,11 +131,24 @@ GoRouter createRouter() {
       ),
       GoRoute(
         path: Routes.adminCategoriesListScreen,
-        builder: (context, state) => const AdminCategoriesListScreen(),
+        builder: (context, state) => BlocProvider(
+          create: (_) => sl<AdminCubit>()..initCategories(),
+          child: const AdminCategoriesListScreen(),
+        ),
       ),
       GoRoute(
         path: Routes.adminOrdersScreen,
-        builder: (context, state) => const AdminOrdersScreen(),
+        builder: (context, state) => BlocProvider(
+          create: (_) => sl<AdminCubit>()..initOrders(),
+          child: const AdminOrdersScreen(),
+        ),
+      ),
+      GoRoute(
+        path: Routes.adminOrderInvoiceScreen,
+        builder: (context, state) {
+          final order = state.extra as OrderModel;
+          return AdminOrderInvoiceScreen(order: order);
+        },
       ),
     ],
   );

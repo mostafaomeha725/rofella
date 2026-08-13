@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop/core/utils/spacing.dart';
 
 import 'package:shop/features/home/presentation/manager/home_cubit.dart';
+import 'package:shop/core/widgets/responsive_container.dart';
 
 import 'collections_section.dart';
 import 'firebase_category_section.dart';
@@ -59,8 +60,7 @@ class HomeScreenBody extends StatelessWidget {
               }
 
               return Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 1200), // Max desktop width
+                child: ResponsiveContainer(
                   child: content,
                 ),
               );

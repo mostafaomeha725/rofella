@@ -5,12 +5,14 @@ class CategoryModel {
   final String name;
   final String imageUrl;
   final DateTime createdAt;
+  final int order;
 
   CategoryModel({
     required this.id,
     required this.name,
     required this.imageUrl,
     required this.createdAt,
+    this.order = 0,
   });
 
   factory CategoryModel.fromJson(Map<String, dynamic> json, String id) {
@@ -19,6 +21,7 @@ class CategoryModel {
       name: json['name'] ?? '',
       imageUrl: json['imageUrl'] ?? '',
       createdAt: (json['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      order: json['order'] ?? 9999,
     );
   }
 
@@ -27,6 +30,7 @@ class CategoryModel {
       'name': name,
       'imageUrl': imageUrl,
       'createdAt': FieldValue.serverTimestamp(),
+      'order': order,
     };
   }
 }

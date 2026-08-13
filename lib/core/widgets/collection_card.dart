@@ -55,8 +55,6 @@ class CollectionCard extends StatelessWidget {
                     maxLines: 2,
                     style: font22w500.copyWith(
                       color: const Color(0xFFF7DEB1), // Pale cream/yellow
-                      fontFamily:
-                          'Times New Roman', // Use a standard serif if custom is missing
                       letterSpacing: 1.5,
                       shadows: [
                         Shadow(

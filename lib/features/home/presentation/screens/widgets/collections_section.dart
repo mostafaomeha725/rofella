@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop/core/routes/route_paths.dart';
 import 'package:shop/features/admin/data/models/category_model.dart';
-import 'package:shop/features/admin/data/services/firebase_service.dart';
 
 import 'package:shop/core/widgets/section_title.dart';
 import 'package:shop/core/widgets/collection_card.dart';
@@ -65,21 +64,36 @@ class CollectionsSection extends StatelessWidget {
           )
         else
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              cacheExtent: 0,
-              addAutomaticKeepAlives: false,
-              addRepaintBoundaries: true,
-              addSemanticIndexes: false,
-              itemCount: categories.length,
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 220,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                childAspectRatio: 0.75,
-              ),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                int crossAxisCount;
+                double childAspectRatio;
+                if (constraints.maxWidth > 1024) {
+                  crossAxisCount = 4;
+                  childAspectRatio = 0.85;
+                } else if (constraints.maxWidth > 768) {
+                  crossAxisCount = 3;
+                  childAspectRatio = 0.80;
+                } else {
+                  crossAxisCount = 2; // Force 2 items per row on mobile
+                  childAspectRatio = 0.75;
+                }
+
+                return GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  cacheExtent: 0,
+                  addAutomaticKeepAlives: false,
+                  addRepaintBoundaries: true,
+                  addSemanticIndexes: false,
+                  itemCount: categories.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    childAspectRatio: childAspectRatio,
+                    crossAxisSpacing: 12.0, // Reduced spacing
+                    mainAxisSpacing: 16.0,
+                  ),
               itemBuilder: (context, index) {
                 final category = categories[index];
                 return CollectionCard(
@@ -92,8 +106,10 @@ class CollectionsSection extends StatelessWidget {
                   ),
                 );
               },
-            ),
-          ),
+            );
+          },
+        ),
+      ),
       ],
     );
   }

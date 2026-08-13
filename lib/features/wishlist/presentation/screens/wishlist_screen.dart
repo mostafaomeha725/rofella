@@ -5,6 +5,7 @@ import 'package:shop/core/widgets/product_card.dart';
 import 'package:shop/features/admin/data/models/product_model.dart';
 import 'package:shop/core/widgets/home_app_bar.dart';
 import 'package:shop/core/widgets/app_drawer.dart';
+import 'package:shop/core/widgets/responsive_container.dart';
 
 class WishlistScreen extends StatelessWidget {
   const WishlistScreen({super.key});
@@ -13,9 +14,14 @@ class WishlistScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const HomeAppBar(),
       drawer: const AppDrawer(),
-      body: ValueListenableBuilder<List<ProductModel>>(
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            const HomeSliverAppBar(),
+          ];
+        },
+        body: ValueListenableBuilder<List<ProductModel>>(
         valueListenable: WishlistState.wishlistItemsNotifier,
         builder: (context, wishlist, child) {
           if (wishlist.isEmpty) {
@@ -43,23 +49,31 @@ class WishlistScreen extends StatelessWidget {
             );
           }
 
-          return SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+          return ResponsiveContainer(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                 Text(
-                  'المفضلة (${wishlist.length})',
+                  'Wishlist (${wishlist.length})',
                   style: font24w800.copyWith(color: Colors.black87),
                 ),
                 const SizedBox(height: 24),
                 LayoutBuilder(
                   builder: (context, constraints) {
-                    int crossAxisCount = constraints.maxWidth > 800
-                        ? 4
-                        : constraints.maxWidth > 500
-                        ? 3
-                        : 2;
+                    int crossAxisCount;
+                    double childAspectRatio;
+                    if (constraints.maxWidth > 1024) {
+                      crossAxisCount = 4;
+                      childAspectRatio = 0.75;
+                    } else if (constraints.maxWidth > 768) {
+                      crossAxisCount = 3;
+                      childAspectRatio = 0.70;
+                    } else {
+                      crossAxisCount = 2;
+                      childAspectRatio = 0.60;
+                    }
 
                     return GridView.builder(
                       shrinkWrap: true,
@@ -67,9 +81,9 @@ class WishlistScreen extends StatelessWidget {
                       itemCount: wishlist.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: crossAxisCount,
-                        childAspectRatio: 0.7,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
+                        childAspectRatio: childAspectRatio,
+                        crossAxisSpacing: 24,
+                        mainAxisSpacing: 24,
                       ),
                       itemBuilder: (context, index) {
                         return ProductCard(product: wishlist[index]);
@@ -79,8 +93,10 @@ class WishlistScreen extends StatelessWidget {
                 ),
               ],
             ),
+          ),
           );
         },
+      ),
       ),
     );
   }

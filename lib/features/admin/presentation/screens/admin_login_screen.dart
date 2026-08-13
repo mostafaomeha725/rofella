@@ -4,6 +4,8 @@ import 'package:shop/core/routes/route_paths.dart';
 import 'package:shop/core/theme/styles.dart';
 import 'package:shop/core/widgets/app_form_field.dart';
 import 'package:shop/core/widgets/custom_text.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shop/core/di/services_locator.dart';
 
 class AdminLoginScreen extends StatefulWidget {
   const AdminLoginScreen({super.key});
@@ -18,9 +20,11 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   bool _obscureText = true;
   String? _errorMessage;
 
-  void _login() {
+  Future<void> _login() async {
     if (_passwordController.text == _correctPassword) {
-      context.go(Routes.adminDashboardScreen);
+      final prefs = sl<SharedPreferences>();
+      await prefs.setBool('is_admin_logged_in', true);
+      if (mounted) context.go(Routes.adminDashboardScreen);
     } else {
       setState(() {
         _errorMessage = 'كلمة المرور غير صحيحة';
@@ -64,9 +68,18 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
               const SizedBox(height: 48),
               AppFormField(
                 controller: _passwordController,
-                hintText: 'كلمة المرور',
+                hintText: '\u200Eكلمة المرور',
                 obsecureText: _obscureText,
+                textAlign: TextAlign.left,
                 maxLines: 1,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 16,
+                ),
+                prefixIconConstraints: const BoxConstraints(
+                  minWidth: 48,
+                  minHeight: 48,
+                ),
                 prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
                 suffixIcon: IconButton(
                   icon: Icon(

@@ -106,7 +106,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             divisions: widget.globalMaxPrice > 0 ? 100 : 1,
             activeColor: const Color(0xFF9E6566),
             inactiveColor: Colors.grey[200],
-            labels: RangeLabels('${_currentMin.toInt()} ج.م', '${_currentMax.toInt()} ج.م'),
+            labels: RangeLabels('${_currentMin.toInt()} EGP', '${_currentMax.toInt()} EGP'),
             onChanged: (values) {
               setState(() {
                 _currentMin = values.start;
@@ -117,8 +117,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('${_currentMin.toInt()} ج.م', style: font14w400.copyWith(color: Colors.grey[600])),
-              Text('${_currentMax.toInt()} ج.م', style: font14w400.copyWith(color: Colors.grey[600])),
+              Text('${_currentMin.toInt()} EGP', style: font14w400.copyWith(color: Colors.grey[600])),
+              Text('${_currentMax.toInt()} EGP', style: font14w400.copyWith(color: Colors.grey[600])),
             ],
           ),
           verticalSpacing(24),

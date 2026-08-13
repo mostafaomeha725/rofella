@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop/core/theme/styles.dart';
 import 'package:shop/core/utils/spacing.dart';
+import 'package:shop/core/widgets/responsive_container.dart';
 
 class FooterSection extends StatelessWidget {
   const FooterSection({super.key});
@@ -10,10 +11,9 @@ class FooterSection extends StatelessWidget {
     return Container(
       width: double.infinity,
       color: const Color(0xFF9E6566), // Match AppBar color
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32.0),
+      padding: const EdgeInsets.symmetric(vertical: 32.0),
       child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
+        child: ResponsiveContainer(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -33,7 +33,7 @@ class FooterSection extends StatelessWidget {
               ),
               verticalSpacing(8),
               AppText(
-                'contact@rofella-shop.com',
+                'contact@beautyskin-shop.com',
                 style: font14w400.copyWith(color: Colors.white),
               ),
               verticalSpacing(24),
@@ -52,7 +52,7 @@ class FooterSection extends StatelessWidget {
 
               verticalSpacing(24),
               AppText(
-                'Copyright © 2026 ROFELLA Shop all rights reserved. Powered by Marginis',
+                'Copyright © 2026 Beauty & Skin Shop all rights reserved. Powered by Marginis',
                 style: font12w400.copyWith(color: Colors.white70),
               ),
             ],

@@ -10,7 +10,7 @@ class PaginatedProductsResult {
   final bool hasMore;
 
   PaginatedProductsResult({
-    required this.products, 
+    required this.products,
     this.lastDocument,
     required this.hasMore,
   });
@@ -21,9 +21,44 @@ class FirebaseService {
   final String _collectionName = 'products';
   final String _categoryCollection = 'categories';
 
+  Future<void> _shiftOrdersIfNeeded(
+    int newOrder,
+    String? excludeId,
+    WriteBatch batch,
+  ) async {
+    if (newOrder == 9999) return;
+
+    final snapshot = await _firestore.collection(_categoryCollection).get();
+
+    final categories = snapshot.docs
+        .map((doc) => CategoryModel.fromJson(doc.data(), doc.id))
+        .where((cat) => cat.id != excludeId && cat.order != 9999)
+        .toList();
+
+    categories.sort((a, b) => a.order.compareTo(b.order));
+
+    int currentCheckOrder = newOrder;
+    for (var cat in categories) {
+      if (cat.order == currentCheckOrder) {
+        batch.update(_firestore.collection(_categoryCollection).doc(cat.id), {
+          'order': cat.order + 1,
+        });
+        currentCheckOrder++;
+      } else if (cat.order > currentCheckOrder) {
+        break;
+      }
+    }
+  }
+
   Future<String?> addCategory(CategoryModel category) async {
     try {
-      await _firestore.collection(_categoryCollection).add(category.toJson()).timeout(const Duration(seconds: 10));
+      final batch = _firestore.batch();
+      final newDocRef = _firestore.collection(_categoryCollection).doc();
+
+      await _shiftOrdersIfNeeded(category.order, null, batch);
+
+      batch.set(newDocRef, category.toJson());
+      await batch.commit().timeout(const Duration(seconds: 10));
       return null;
     } catch (e) {
       debugPrint('Firebase Error (Add Category): $e');
@@ -32,14 +67,19 @@ class FirebaseService {
   }
 
   Stream<List<CategoryModel>> getCategories() {
-    return _firestore
-        .collection(_categoryCollection)
-        .orderBy('createdAt', descending: true)
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs
+    return _firestore.collection(_categoryCollection).snapshots().map((
+      snapshot,
+    ) {
+      final list = snapshot.docs
           .map((doc) => CategoryModel.fromJson(doc.data(), doc.id))
           .toList();
+      list.sort((a, b) {
+        if (a.order != b.order) {
+          return a.order.compareTo(b.order);
+        }
+        return b.createdAt.compareTo(a.createdAt);
+      });
+      return list;
     });
   }
 
@@ -47,12 +87,18 @@ class FirebaseService {
     try {
       final snapshot = await _firestore
           .collection(_categoryCollection)
-          .orderBy('createdAt', descending: true)
           .get(const GetOptions(source: Source.serverAndCache))
           .timeout(const Duration(seconds: 10));
-      return snapshot.docs
+      final list = snapshot.docs
           .map((doc) => CategoryModel.fromJson(doc.data(), doc.id))
           .toList();
+      list.sort((a, b) {
+        if (a.order != b.order) {
+          return a.order.compareTo(b.order);
+        }
+        return b.createdAt.compareTo(a.createdAt);
+      });
+      return list;
     } catch (e) {
       debugPrint('Firebase Fetch Categories Error: $e');
       return [];
@@ -61,12 +107,22 @@ class FirebaseService {
 
   Future<String?> updateCategory(CategoryModel category) async {
     try {
+      final batch = _firestore.batch();
+      final docRef = _firestore
+          .collection(_categoryCollection)
+          .doc(category.id);
+
+      await _shiftOrdersIfNeeded(category.order, category.id, batch);
+
       final updateData = {
         'name': category.name,
         'imageUrl': category.imageUrl,
+        'order': category.order,
         // We do not update createdAt
       };
-      await _firestore.collection(_categoryCollection).doc(category.id).update(updateData).timeout(const Duration(seconds: 10));
+      batch.update(docRef, updateData);
+
+      await batch.commit().timeout(const Duration(seconds: 10));
       return null;
     } catch (e) {
       debugPrint('Firebase Error (Update Category): $e');
@@ -74,9 +130,54 @@ class FirebaseService {
     }
   }
 
+  Future<void> _shiftOrdersDownIfNeeded(
+    int deletedOrder,
+    WriteBatch batch,
+  ) async {
+    if (deletedOrder == 9999) return;
+
+    final snapshot = await _firestore.collection(_categoryCollection).get();
+
+    final categories = snapshot.docs
+        .map((doc) => CategoryModel.fromJson(doc.data(), doc.id))
+        .where((cat) => cat.order > deletedOrder && cat.order != 9999)
+        .toList();
+
+    categories.sort((a, b) => a.order.compareTo(b.order));
+
+    int currentExpectedOrder = deletedOrder + 1;
+    for (var cat in categories) {
+      if (cat.order == currentExpectedOrder) {
+        batch.update(_firestore.collection(_categoryCollection).doc(cat.id), {
+          'order': cat.order - 1,
+        });
+        currentExpectedOrder++;
+      } else if (cat.order > currentExpectedOrder) {
+        break;
+      }
+    }
+  }
+
   Future<String?> deleteCategory(String categoryId) async {
     try {
-      await _firestore.collection(_categoryCollection).doc(categoryId).delete().timeout(const Duration(seconds: 10));
+      final docSnapshot = await _firestore
+          .collection(_categoryCollection)
+          .doc(categoryId)
+          .get();
+      if (!docSnapshot.exists) return null;
+
+      final category = CategoryModel.fromJson(
+        docSnapshot.data()!,
+        docSnapshot.id,
+      );
+
+      final batch = _firestore.batch();
+
+      await _shiftOrdersDownIfNeeded(category.order, batch);
+
+      batch.delete(docSnapshot.reference);
+
+      await batch.commit().timeout(const Duration(seconds: 10));
       return null;
     } catch (e) {
       debugPrint('Firebase Error (Delete Category): $e');
@@ -86,7 +187,10 @@ class FirebaseService {
 
   Future<String?> addProduct(ProductModel product) async {
     try {
-      await _firestore.collection(_collectionName).add(product.toMap()).timeout(const Duration(seconds: 10));
+      await _firestore
+          .collection(_collectionName)
+          .add(product.toMap())
+          .timeout(const Duration(seconds: 10));
       return null;
     } catch (e) {
       debugPrint('Firebase Error (Add Product): $e');
@@ -98,13 +202,21 @@ class FirebaseService {
     try {
       final updateData = {
         'name': product.name,
+        'name_lower': product.name.toLowerCase(),
         'description': product.description,
         'price': product.price,
+        'oldPrice': product.oldPrice,
         'category': product.category,
         'images': product.images,
+        'colors': product.colors,
+        'sizes': product.sizes,
         // We do not update createdAt
       };
-      await _firestore.collection(_collectionName).doc(product.id).update(updateData).timeout(const Duration(seconds: 10));
+      await _firestore
+          .collection(_collectionName)
+          .doc(product.id)
+          .update(updateData)
+          .timeout(const Duration(seconds: 10));
       return null;
     } catch (e) {
       debugPrint('Firebase Error (Update Product): $e');
@@ -114,7 +226,11 @@ class FirebaseService {
 
   Future<String?> deleteProduct(String productId) async {
     try {
-      await _firestore.collection(_collectionName).doc(productId).delete().timeout(const Duration(seconds: 10));
+      await _firestore
+          .collection(_collectionName)
+          .doc(productId)
+          .delete()
+          .timeout(const Duration(seconds: 10));
       return null;
     } catch (e) {
       debugPrint('Firebase Error (Delete Product): $e');
@@ -130,15 +246,17 @@ class FirebaseService {
           .get()
           .timeout(const Duration(seconds: 10));
 
-      final products = snapshot.docs.map((doc) => ProductModel.fromMap(doc.data(), doc.id)).toList();
-      
+      final products = snapshot.docs
+          .map((doc) => ProductModel.fromMap(doc.data(), doc.id))
+          .toList();
+
       // Sort locally to avoid needing a Firestore Composite Index
       products.sort((a, b) {
         final dateA = a.createdAt ?? DateTime(2000);
         final dateB = b.createdAt ?? DateTime(2000);
         return dateB.compareTo(dateA);
       });
-      
+
       return products;
     } catch (e) {
       debugPrint('Firebase Fetch Error: $e');
@@ -156,7 +274,9 @@ class FirebaseService {
           .collection(_collectionName)
           .where('category', isEqualTo: category)
           .orderBy('createdAt', descending: true)
-          .limit(limit + 1); // Request limit + 1 to check if there is a next page
+          .limit(
+            limit + 1,
+          ); // Request limit + 1 to check if there is a next page
 
       if (startAfter != null) {
         query = query.startAfterDocument(startAfter);
@@ -166,23 +286,34 @@ class FirebaseService {
 
       final docs = snapshot.docs;
       final bool hasMore = docs.length > limit;
-      
+
       final productsToReturn = hasMore ? docs.sublist(0, limit) : docs;
 
       final products = productsToReturn
-          .map((doc) => ProductModel.fromMap(doc.data() as Map<String, dynamic>, doc.id))
+          .map(
+            (doc) => ProductModel.fromMap(
+              doc.data() as Map<String, dynamic>,
+              doc.id,
+            ),
+          )
           .toList();
 
-      final lastDocument = productsToReturn.isNotEmpty ? productsToReturn.last : null;
+      final lastDocument = productsToReturn.isNotEmpty
+          ? productsToReturn.last
+          : null;
 
       return PaginatedProductsResult(
-        products: products, 
+        products: products,
         lastDocument: lastDocument,
         hasMore: hasMore,
       );
     } catch (e) {
       debugPrint('Firebase Fetch Paginated Error: $e');
-      return PaginatedProductsResult(products: [], lastDocument: null, hasMore: false);
+      return PaginatedProductsResult(
+        products: [],
+        lastDocument: null,
+        hasMore: false,
+      );
     }
   }
 
@@ -210,17 +341,28 @@ class FirebaseService {
       final productsToReturn = hasMore ? docs.sublist(0, limit) : docs;
 
       final products = productsToReturn
-          .map((doc) => ProductModel.fromMap(doc.data() as Map<String, dynamic>, doc.id))
+          .map(
+            (doc) => ProductModel.fromMap(
+              doc.data() as Map<String, dynamic>,
+              doc.id,
+            ),
+          )
           .toList();
 
       return PaginatedProductsResult(
         products: products,
-        lastDocument: productsToReturn.isNotEmpty ? productsToReturn.last : null,
+        lastDocument: productsToReturn.isNotEmpty
+            ? productsToReturn.last
+            : null,
         hasMore: hasMore,
       );
     } catch (e) {
       debugPrint('Firebase Search Global Error: $e');
-      return PaginatedProductsResult(products: [], lastDocument: null, hasMore: false);
+      return PaginatedProductsResult(
+        products: [],
+        lastDocument: null,
+        hasMore: false,
+      );
     }
   }
 
@@ -250,17 +392,28 @@ class FirebaseService {
       final productsToReturn = hasMore ? docs.sublist(0, limit) : docs;
 
       final products = productsToReturn
-          .map((doc) => ProductModel.fromMap(doc.data() as Map<String, dynamic>, doc.id))
+          .map(
+            (doc) => ProductModel.fromMap(
+              doc.data() as Map<String, dynamic>,
+              doc.id,
+            ),
+          )
           .toList();
 
       return PaginatedProductsResult(
         products: products,
-        lastDocument: productsToReturn.isNotEmpty ? productsToReturn.last : null,
+        lastDocument: productsToReturn.isNotEmpty
+            ? productsToReturn.last
+            : null,
         hasMore: hasMore,
       );
     } catch (e) {
       debugPrint('Firebase Search Category Error: $e');
-      return PaginatedProductsResult(products: [], lastDocument: null, hasMore: false);
+      return PaginatedProductsResult(
+        products: [],
+        lastDocument: null,
+        hasMore: false,
+      );
     }
   }
 
@@ -271,10 +424,10 @@ class FirebaseService {
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => ProductModel.fromMap(doc.data(), doc.id))
-          .toList();
-    });
+          return snapshot.docs
+              .map((doc) => ProductModel.fromMap(doc.data(), doc.id))
+              .toList();
+        });
   }
 
   // --- Orders ---
@@ -282,7 +435,10 @@ class FirebaseService {
 
   Future<String?> createOrder(OrderModel order) async {
     try {
-      await _firestore.collection(_ordersCollection).add(order.toMap()).timeout(const Duration(seconds: 10));
+      await _firestore
+          .collection(_ordersCollection)
+          .add(order.toMap())
+          .timeout(const Duration(seconds: 10));
       return null;
     } catch (e) {
       debugPrint('Firebase Error (Create Order): $e');
@@ -296,10 +452,10 @@ class FirebaseService {
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => OrderModel.fromMap(doc.data(), doc.id))
-          .toList();
-    });
+          return snapshot.docs
+              .map((doc) => OrderModel.fromMap(doc.data(), doc.id))
+              .toList();
+        });
   }
 
   Future<String?> updateOrderStatus(String orderId, String newStatus) async {
@@ -307,7 +463,8 @@ class FirebaseService {
       await _firestore
           .collection(_ordersCollection)
           .doc(orderId)
-          .update({'status': newStatus}).timeout(const Duration(seconds: 10));
+          .update({'status': newStatus})
+          .timeout(const Duration(seconds: 10));
       return null;
     } catch (e) {
       debugPrint('Firebase Error (Update Order Status): $e');
@@ -315,53 +472,31 @@ class FirebaseService {
     }
   }
 
-  // --- Visitors Stats ---
-  
-  Future<void> incrementVisit() async {
+  Future<String?> deleteOrder(String orderId) async {
     try {
-      final docRef = _firestore.collection('stats').doc('visits');
-      await _firestore.runTransaction((transaction) async {
-        final snapshot = await transaction.get(docRef);
-        if (!snapshot.exists) {
-          transaction.set(docRef, {'count': 1});
-        } else {
-          int newCount = (snapshot.data()?['count'] ?? 0) + 1;
-          transaction.update(docRef, {'count': newCount});
-        }
-      });
+      await _firestore
+          .collection(_ordersCollection)
+          .doc(orderId)
+          .delete()
+          .timeout(const Duration(seconds: 10));
+      return null;
     } catch (e) {
-      debugPrint('Firebase Error (Increment Visit): $e');
+      debugPrint('Firebase Error (Delete Order): $e');
+      return e.toString();
     }
   }
 
-  Stream<int> getVisitCount() {
-    return _firestore.collection('stats').doc('visits').snapshots().map((snapshot) {
-      if (!snapshot.exists) return 0;
-      return snapshot.data()?['count'] ?? 0;
-    });
-  }
-
-  Future<void> incrementUniqueVisit() async {
+  Future<String?> deleteOrders(List<String> orderIds) async {
     try {
-      final docRef = _firestore.collection('stats').doc('unique_visits');
-      await _firestore.runTransaction((transaction) async {
-        final snapshot = await transaction.get(docRef);
-        if (!snapshot.exists) {
-          transaction.set(docRef, {'count': 1});
-        } else {
-          int newCount = (snapshot.data()?['count'] ?? 0) + 1;
-          transaction.update(docRef, {'count': newCount});
-        }
-      });
+      final batch = _firestore.batch();
+      for (final id in orderIds) {
+        batch.delete(_firestore.collection(_ordersCollection).doc(id));
+      }
+      await batch.commit().timeout(const Duration(seconds: 10));
+      return null;
     } catch (e) {
-      debugPrint('Firebase Error (Increment Unique Visit): $e');
+      debugPrint('Firebase Error (Delete Orders): $e');
+      return e.toString();
     }
-  }
-
-  Stream<int> getUniqueVisitCount() {
-    return _firestore.collection('stats').doc('unique_visits').snapshots().map((snapshot) {
-      if (!snapshot.exists) return 0;
-      return snapshot.data()?['count'] ?? 0;
-    });
   }
 }

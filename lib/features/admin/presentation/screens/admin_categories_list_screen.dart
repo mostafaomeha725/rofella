@@ -5,20 +5,26 @@ import 'package:shop/core/routes/route_paths.dart';
 import 'package:shop/core/theme/styles.dart';
 import 'package:shop/core/widgets/custom_text.dart';
 import 'package:shop/features/admin/data/models/category_model.dart';
-import 'package:shop/features/admin/data/services/firebase_service.dart';
 import 'package:shop/core/utils/easy_loading.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop/features/admin/presentation/manager/admin_cubit.dart';
+
+import 'package:shop/core/di/services_locator.dart';
+import 'package:shop/features/admin/data/services/firebase_service.dart';
 
 class AdminCategoriesListScreen extends StatelessWidget {
   const AdminCategoriesListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseService firebaseService = FirebaseService();
-
+    final firebaseService = sl<FirebaseService>();
     return Scaffold(
       backgroundColor: const Color(0xFFF5F6FA),
       appBar: AppBar(
-        title: AppText('جميع التصنيفات', style: font18w700.copyWith(color: Colors.black87)),
+        title: AppText(
+          'جميع التصنيفات',
+          style: font18w700.copyWith(color: Colors.black87),
+        ),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 1,
@@ -26,33 +32,42 @@ class AdminCategoriesListScreen extends StatelessWidget {
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,
-        child: StreamBuilder<List<CategoryModel>>(
-          stream: firebaseService.getCategories(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+        child: BlocBuilder<AdminCubit, AdminState>(
+          builder: (context, state) {
+            if (state is AdminLoading || state is AdminInitial) {
               return const Center(child: CircularProgressIndicator());
             }
-            if (snapshot.hasError) {
+            if (state is AdminError) {
               return Center(
                 child: AppText(
-                  'حدث خطأ في جلب البيانات: ${snapshot.error}',
+                  'حدث خطأ في جلب البيانات: ${state.message}',
                   style: font16w700.copyWith(color: Colors.red),
                 ),
               );
             }
 
-            final categories = snapshot.data ?? [];
+            List<CategoryModel> categories = [];
+            if (state is AdminCategoriesLoaded) {
+              categories = state.categories;
+            } else if (state is AdminDashboardLoaded) {
+              categories = state.categories;
+            }
 
             if (categories.isEmpty) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.category_outlined, size: 80, color: Colors.grey),
+                    const Icon(
+                      Icons.category_outlined,
+                      size: 80,
+                      color: Colors.grey,
+                    ),
                     const SizedBox(height: 16),
                     AppText(
                       'لا توجد تصنيفات حالياً',
                       style: font16w700.copyWith(color: Colors.grey),
+                      alignment: AlignmentDirectional.center,
                     ),
                   ],
                 ),
@@ -98,19 +113,30 @@ class AdminCategoriesListScreen extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.edit_outlined, color: Colors.blueAccent),
+                          icon: const Icon(
+                            Icons.edit_outlined,
+                            color: Colors.blueAccent,
+                          ),
                           onPressed: () {
-                            context.push(Routes.adminAddCategoryScreen, extra: category);
+                            context.push(
+                              Routes.adminAddCategoryScreen,
+                              extra: category,
+                            );
                           },
                         ),
                         IconButton(
-                          icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
+                          icon: const Icon(
+                            Icons.delete_outline,
+                            color: Colors.redAccent,
+                          ),
                           onPressed: () {
                             showDialog(
                               context: context,
                               builder: (ctx) => AlertDialog(
                                 title: const Text('تأكيد الحذف'),
-                                content: Text('هل أنت متأكد من حذف تصنيف "${category.name}"؟'),
+                                content: Text(
+                                  'هل أنت متأكد من حذف تصنيف "${category.name}"؟',
+                                ),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(ctx),
@@ -119,12 +145,16 @@ class AdminCategoriesListScreen extends StatelessWidget {
                                   TextButton(
                                     onPressed: () async {
                                       Navigator.pop(ctx);
-                                      final error = await firebaseService.deleteCategory(category.id);
+                                      final error = await firebaseService
+                                          .deleteCategory(category.id);
                                       if (error != null && context.mounted) {
                                         showError('خطأ في الحذف: $error');
                                       }
                                     },
-                                    child: const Text('حذف', style: TextStyle(color: Colors.red)),
+                                    child: const Text(
+                                      'حذف',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
                                   ),
                                 ],
                               ),

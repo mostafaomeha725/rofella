@@ -6,6 +6,7 @@ import 'package:shop/core/widgets/footer_section.dart';
 import 'package:shop/core/widgets/home_app_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop/core/widgets/whatsapp_floating_button.dart';
+import 'package:shop/core/widgets/responsive_container.dart';
 import 'package:shop/features/home/presentation/screens/widgets/firebase_category_section.dart';
 
 
@@ -105,19 +106,22 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const AppDrawer(),
-      appBar: HomeAppBar(categoryName: widget.categoryName),
       floatingActionButton: const WhatsappFloatingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      body: SingleChildScrollView(
+      body: NestedScrollView(
         controller: _scrollController,
-        child: Column(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            HomeSliverAppBar(categoryName: widget.categoryName),
+          ];
+        },
+        body: SingleChildScrollView(
+          child: Column(
           children: [
             Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1200),
+              child: ResponsiveContainer(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
                     vertical: 24,
                   ),
                   child: Column(
@@ -146,6 +150,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             const FooterSection(),
           ],
         ),
+      ),
       ),
     );
   }

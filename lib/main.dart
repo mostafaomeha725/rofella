@@ -3,18 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop/core/routes/app_routes.dart';
 import 'package:shop/core/theme/light_colors.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:shop/firebase_options.dart';
-import 'package:shop/core/di/services_locator.dart';
-
-import 'package:shop/features/admin/data/services/firebase_service.dart';
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:shop/core/utils/cart_animation_service.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
+import 'package:shop/features/admin/data/services/analytics_service.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:shop/firebase_options.dart';
+import 'package:shop/core/di/services_locator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop/features/home/presentation/manager/home_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,17 +22,8 @@ Future<void> main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
     
-    final firebaseService = FirebaseService();
-    // Track app visit (Total opens)
-    firebaseService.incrementVisit();
-
-    // Track unique app visit
-    final prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey('visitor_uuid')) {
-      final uuid = const Uuid().v4();
-      await prefs.setString('visitor_uuid', uuid);
-      await firebaseService.incrementUniqueVisit();
-    }
+    final analyticsService = sl<AnalyticsService>();
+    analyticsService.recordVisit();
   } catch (e) {
     debugPrint('Firebase init error: $e');
   }
@@ -55,7 +44,7 @@ class ShopApp extends StatelessWidget {
       useInheritedMediaQuery: true,
       builder: (context, child) {
         return MaterialApp.router(
-          title: 'Shop App',
+          title: 'Beauty & Skin',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             scaffoldBackgroundColor: AppLightColors.defaultBackground,
@@ -63,12 +52,17 @@ class ShopApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(
               seedColor: AppLightColors.primary,
             ),
+            textTheme: GoogleFonts.cairoTextTheme(Theme.of(context).textTheme),
           ),
           scrollBehavior: const RightScrollbarBehavior(),
           routerConfig: router,
           builder: (context, child) {
             final easyLoading = EasyLoading.init();
             child = easyLoading(context, child);
+            child = BlocProvider.value(
+              value: sl<HomeCubit>()..init(),
+              child: child,
+            );
             return AddToCartAnimation(
               cartKey: CartAnimationService.cartKey,
               height: 30,

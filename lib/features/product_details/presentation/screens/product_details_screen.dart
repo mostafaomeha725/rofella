@@ -26,10 +26,15 @@ class ProductDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const HomeAppBar(),
       drawer: const AppDrawer(),
-      body: SingleChildScrollView(
-        child: Column(
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            const HomeSliverAppBar(),
+          ];
+        },
+        body: SingleChildScrollView(
+          child: Column(
           children: [
             const SizedBox(height: 16),
             Stack(
@@ -46,13 +51,17 @@ class ProductDetailsScreen extends StatelessWidget {
             ProductInfoSection(
               subtitle: product.category,
               title: product.name,
-              price: 'LE ${product.price.toStringAsFixed(2)}',
+              price: 'EGP ${product.price.toInt()}',
+              oldPrice: product.oldPrice != null 
+                  ? 'EGP ${product.oldPrice!.toInt()}' 
+                  : null,
             ),
             ProductDescriptionSection(description: product.description),
             const SizedBox(height: 16),
             const FooterSection(),
           ],
         ),
+      ),
       ),
       bottomNavigationBar: AddToCartBottomBar(product: product),
     );

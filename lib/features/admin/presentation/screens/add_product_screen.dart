@@ -9,8 +9,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../../data/models/product_model.dart';
 import '../../data/models/category_model.dart';
-import '../../data/services/cloudinary_service.dart';
-import '../../data/services/firebase_service.dart';
+import 'package:shop/features/admin/data/services/cloudinary_service.dart';
+import 'package:shop/features/admin/data/services/firebase_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop/features/admin/presentation/manager/admin_cubit.dart';
 import '../../data/services/image_compression_service.dart';
 import 'package:shop/core/di/services_locator.dart';
 
@@ -27,6 +29,7 @@ class _AdminAddProductScreenState extends State<AdminAddProductScreen> {
   final _nameController = TextEditingController();
   final _descController = TextEditingController();
   final _priceController = TextEditingController();
+  final _oldPriceController = TextEditingController();
   final _categoryController = TextEditingController();
 
   final List<XFile> _selectedImages = [];
@@ -41,6 +44,9 @@ class _AdminAddProductScreenState extends State<AdminAddProductScreen> {
       _nameController.text = widget.productToEdit!.name;
       _descController.text = widget.productToEdit!.description;
       _priceController.text = widget.productToEdit!.price.toString();
+      if (widget.productToEdit!.oldPrice != null) {
+        _oldPriceController.text = widget.productToEdit!.oldPrice.toString();
+      }
       _categoryController.text = widget.productToEdit!.category;
       _existingImages = List.from(widget.productToEdit!.images);
     }
@@ -104,6 +110,9 @@ class _AdminAddProductScreenState extends State<AdminAddProductScreen> {
         name: _nameController.text.trim(),
         description: _descController.text.trim(),
         price: double.tryParse(_priceController.text.trim()) ?? 0.0,
+        oldPrice: _oldPriceController.text.trim().isNotEmpty
+            ? double.tryParse(_oldPriceController.text.trim())
+            : null,
         category: _categoryController.text.trim(),
         images: imageUrls,
         createdAt: isEditing ? widget.productToEdit!.createdAt : DateTime.now(),
@@ -139,6 +148,7 @@ class _AdminAddProductScreenState extends State<AdminAddProductScreen> {
     _nameController.clear();
     _descController.clear();
     _priceController.clear();
+    _oldPriceController.clear();
     _categoryController.clear();
     setState(() {
       _selectedImages.clear();
@@ -161,17 +171,21 @@ class _AdminAddProductScreenState extends State<AdminAddProductScreen> {
                 child: Text('اختر التصنيف', style: font16w700),
               ),
               const Divider(height: 1),
-              StreamBuilder<List<CategoryModel>>(
-                stream: _firebaseService.getCategories(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+              BlocBuilder<AdminCubit, AdminState>(
+                builder: (context, state) {
+                  if (state is AdminLoading || state is AdminInitial) {
                     return const Padding(
                       padding: EdgeInsets.all(32.0),
                       child: Center(child: CircularProgressIndicator()),
                     );
                   }
 
-                  final categories = snapshot.data ?? [];
+                  List<CategoryModel> categories = [];
+                  if (state is AdminCategoriesLoaded) {
+                    categories = state.categories;
+                  } else if (state is AdminDashboardLoaded) {
+                    categories = state.categories;
+                  }
 
                   if (categories.isEmpty) {
                     return const Padding(
@@ -221,6 +235,7 @@ class _AdminAddProductScreenState extends State<AdminAddProductScreen> {
     _nameController.dispose();
     _descController.dispose();
     _priceController.dispose();
+    _oldPriceController.dispose();
     _categoryController.dispose();
     super.dispose();
   }
@@ -381,6 +396,13 @@ class _AdminAddProductScreenState extends State<AdminAddProductScreen> {
               hintText: 'السعر (مثال: 150.5)',
               keyboardType: TextInputType.number,
               validator: (v) => v!.isEmpty ? 'مطلوب' : null,
+            ),
+            const SizedBox(height: 16),
+
+            AppFormField(
+              controller: _oldPriceController,
+              hintText: 'السعر قبل الخصم (اختياري)',
+              keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 16),
 

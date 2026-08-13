@@ -35,12 +35,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB),
-      appBar: const HomeAppBar(),
-      body: ValueListenableBuilder<List<CartItemModel>>(
-        valueListenable: CartState.cartItemsNotifier,
-        builder: (context, cartItems, child) {
-          final double totalAmount = cartItems.fold(
-            0, (sum, item) => sum + item.totalPrice);
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            const HomeSliverAppBar(),
+          ];
+        },
+        body: ValueListenableBuilder<List<CartItemModel>>(
+          valueListenable: CartState.cartItemsNotifier,
+          builder: (context, cartItems, child) {
+            final double totalAmount = cartItems.fold(
+              0, (sum, item) => sum + item.totalPrice);
             
           return Center(
             child: ConstrainedBox(
@@ -75,7 +80,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 const SizedBox(height: 24),
 
                 // Subtotals
-                _buildCostRow('اجمالي المنتجات', '${totalAmount.toStringAsFixed(2)} ج.م'),
+                _buildCostRow('اجمالي المنتجات', '${totalAmount.toInt().toString()} EGP'),
                 const SizedBox(height: 16),
                 _buildCostRow('تكلفة الشحن', 'يرجى اختيار المدينة', isHighlight: true),
             const SizedBox(height: 16),
@@ -121,7 +126,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             const SizedBox(height: 16),
 
             // Total
-            _buildCostRow('الاجمالي', '1000 ج.م', isBold: true),
+            _buildCostRow('الاجمالي', '1000 EGP', isBold: true),
             const SizedBox(height: 32),
 
             // User Information Form
@@ -175,6 +180,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         ),
       );
     },
+  ),
   ),
   bottomNavigationBar: SafeArea(
         child: Padding(

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shop/core/routes/route_paths.dart';
 import 'package:shop/core/theme/styles.dart';
 import 'package:shop/core/widgets/custom_text.dart';
 import '../../data/models/product_model.dart';
 import '../../data/models/category_model.dart';
 import '../../data/services/firebase_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop/features/admin/presentation/manager/admin_cubit.dart';
+import 'package:shop/core/di/services_locator.dart';
 import 'package:shop/core/utils/easy_loading.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
@@ -17,7 +21,7 @@ class AdminDashboardScreen extends StatefulWidget {
 }
 
 class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
-  final FirebaseService _firebaseService = FirebaseService();
+  final _firebaseService = sl<FirebaseService>();
 
   @override
   Widget build(BuildContext context) {
@@ -45,22 +49,29 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           ),
         ],
       ),
-      body: StreamBuilder<List<ProductModel>>(
-        stream: _firebaseService.getProducts(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+      body: BlocBuilder<AdminCubit, AdminState>(
+        builder: (context, state) {
+          if (state is AdminLoading || state is AdminInitial) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (snapshot.hasError) {
+          if (state is AdminError) {
             return Center(
               child: AppText(
-                'حدث خطأ في جلب البيانات: ${snapshot.error}',
+                'حدث خطأ في جلب البيانات: ${state.message}',
                 style: font16w700.copyWith(color: Colors.red),
               ),
             );
           }
 
-          final products = snapshot.data ?? [];
+          if (state is! AdminDashboardLoaded) {
+            return const SizedBox.shrink();
+          }
+
+          final products = state.products;
+          final categories = state.categories;
+          final orderCount = state.ordersCount;
+          final visitCount = state.totalVisits;
+          final uniqueCount = state.uniqueDevices;
 
           return CustomScrollView(
             slivers: [
@@ -84,23 +95,17 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       ),
                       const SizedBox(width: 16),
                       Expanded(
-                        child: StreamBuilder<List<CategoryModel>>(
-                          stream: _firebaseService.getCategories(),
-                          builder: (context, catSnapshot) {
-                            final catCount = catSnapshot.data?.length ?? 0;
-                            return _buildStatCard(
-                              title: 'التصنيفات',
-                              count: catCount,
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFFF7DEB1), Color(0xFFE5B05C)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              textColor: Colors.black87,
-                              onTap: () {
-                                context.push(Routes.adminCategoriesListScreen);
-                              },
-                            );
+                        child: _buildStatCard(
+                          title: 'التصنيفات',
+                          count: categories.length,
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFFF7DEB1), Color(0xFFE5B05C)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          textColor: Colors.black87,
+                          onTap: () {
+                            context.push(Routes.adminCategoriesListScreen);
                           },
                         ),
                       ),
@@ -116,47 +121,35 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: StreamBuilder<List<dynamic>>(
-                          stream: _firebaseService.getOrders(),
-                          builder: (context, orderSnapshot) {
-                            final orderCount = orderSnapshot.data?.length ?? 0;
-                            return _buildStatCard(
-                              title: 'الطلبات',
-                              count: orderCount,
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFF5C2428), Color(0xFFD65E68)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              textColor: Colors.white,
-                              onTap: () {
-                                context.push(Routes.adminOrdersScreen);
-                              },
-                            );
+                        child: _buildStatCard(
+                          title: 'الطلبات',
+                          count: orderCount,
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF5C2428), Color(0xFFD65E68)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          textColor: Colors.white,
+                          onTap: () {
+                            context.push(Routes.adminOrdersScreen);
                           },
                         ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
-                        child: StreamBuilder<int>(
-                          stream: _firebaseService.getVisitCount(),
-                          builder: (context, visitSnapshot) {
-                            final visitCount = visitSnapshot.data ?? 0;
-                            return _buildStatCard(
-                              title: 'الزيارات',
-                              count: visitCount,
-                              gradient: const LinearGradient(
-                                colors: [
-                                  Color(0xFF4CA1AF),
-                                  Color(0xFFC4E0E5),
-                                ], // Modern blue gradient
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              textColor: Colors.black87,
-                              onTap: null,
-                            );
-                          },
+                        child: _buildStatCard(
+                          title: 'الزيارات',
+                          count: visitCount,
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color(0xFF4CA1AF),
+                              Color(0xFFC4E0E5),
+                            ], // Modern blue gradient
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          textColor: Colors.black87,
+                          onTap: null,
                         ),
                       ),
                     ],
@@ -167,26 +160,27 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               // Unique Visits Stat Card
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+                  padding: const EdgeInsets.only(
+                    left: 16.0,
+                    right: 16.0,
+                    top: 16.0,
+                  ),
                   child: Row(
                     children: [
                       Expanded(
-                        child: StreamBuilder<int>(
-                          stream: _firebaseService.getUniqueVisitCount(),
-                          builder: (context, visitSnapshot) {
-                            final visitCount = visitSnapshot.data ?? 0;
-                            return _buildStatCard(
-                              title: 'الزوار الفريدين',
-                              count: visitCount,
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFF8E2DE2), Color(0xFF4A00E0)], // Purple gradient
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              textColor: Colors.white,
-                              onTap: null,
-                            );
-                          },
+                        child: _buildStatCard(
+                          title: 'الزوار الفريدين',
+                          count: uniqueCount,
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color(0xFF8E2DE2),
+                              Color(0xFF4A00E0),
+                            ], // Purple gradient
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          textColor: Colors.white,
+                          onTap: null,
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -229,6 +223,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                           AppText(
                             'لا توجد منتجات حالياً',
                             style: font16w700.copyWith(color: Colors.grey),
+                            alignment: AlignmentDirectional.center,
                           ),
                         ],
                       ),
@@ -267,7 +262,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                               color: Colors.grey[200],
                               image: product.images.isNotEmpty
                                   ? DecorationImage(
-                                      image: CachedNetworkImageProvider(product.images.first),
+                                      image: CachedNetworkImageProvider(
+                                        product.images.first,
+                                      ),
                                       fit: BoxFit.cover,
                                     )
                                   : null,
@@ -287,11 +284,29 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                           ),
                           subtitle: Padding(
                             padding: const EdgeInsets.only(top: 8.0),
-                            child: AppText(
-                              '${product.price} جنيه',
-                              style: font14w500.copyWith(
-                                color: Colors.blueAccent,
-                              ),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: AlignmentDirectional.centerStart,
+                              child: Row(
+                                children: [
+                                AppText(
+                                  '${product.price.toInt()} EGP',
+                                  style: font14w500.copyWith(
+                                    color: Colors.blueAccent,
+                                  ),
+                                ),
+                                if (product.oldPrice != null) ...[
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    '${product.oldPrice!.toInt()} EGP',
+                                    style: font14w500.copyWith(
+                                      color: Colors.grey,
+                                      decoration: TextDecoration.lineThrough,
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
                             ),
                           ),
                           trailing: Row(

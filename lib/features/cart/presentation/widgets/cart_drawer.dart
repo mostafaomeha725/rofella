@@ -92,7 +92,7 @@ class CartDrawer extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             AppText(
-                              'LE ${totalAmount.toStringAsFixed(2)}',
+                              'EGP ${totalAmount.toInt().toString()}',
                               style: font16w600.copyWith(color: Colors.black87),
                             ),
                             AppText(
@@ -125,14 +125,6 @@ class CartDrawer extends StatelessWidget {
                               'إتمام الطلب',
                               style: font18w700.copyWith(color: Colors.white),
                             ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        GestureDetector(
-                          onTap: () => context.pop(),
-                          child: AppText(
-                            'أو متابعة التسوق ←',
-                            style: font14w700.copyWith(color: Colors.blue),
                           ),
                         ),
                       ],

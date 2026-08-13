@@ -11,24 +11,29 @@ class PriceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        AppText(
-          currentPrice,
-          style: font14w700.copyWith(color: const Color(0xFF5C2428)),
-        ),
-        if (oldPrice != null) ...[
-          const SizedBox(width: 8),
-          AppText(
-            oldPrice!,
-            style: font12w400.copyWith(
-              color: Colors.grey,
-              decoration: TextDecoration.lineThrough,
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(
+              text: currentPrice,
+              style: font14w700.copyWith(color: const Color(0xFF5C2428)),
             ),
-          ),
-        ],
-      ],
+            if (oldPrice != null) ...[
+              const TextSpan(text: '  '),
+              TextSpan(
+                text: oldPrice!,
+                style: font12w400.copyWith(
+                  color: Colors.grey,
+                  decoration: TextDecoration.lineThrough,
+                ),
+              ),
+            ],
+          ],
+        ),
+        textAlign: TextAlign.center,
+      ),
     );
   }
 }

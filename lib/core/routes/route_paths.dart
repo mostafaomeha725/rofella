@@ -19,6 +19,7 @@ class Routes {
   static const adminAddCategoryScreen = '/admin/add-category';
   static const adminCategoriesListScreen = '/admin/categories-list';
   static const adminOrdersScreen = '/admin/orders';
+  static const adminOrderInvoiceScreen = '/admin/orders/invoice';
   // static const gymRegisterDetailesScreen = '/gymRegisterDetailes';
   static const mainNavigationScreen = '/mainNavigationScreen';
   // static const gymDetailsScreen = '/GymDetailsScreen';

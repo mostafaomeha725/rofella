@@ -8,6 +8,7 @@ class ProductModel {
   final DateTime? createdAt;
   final List<String>? colors;
   final List<String>? sizes;
+  final double? oldPrice;
 
   ProductModel({
     this.id,
@@ -19,6 +20,7 @@ class ProductModel {
     this.createdAt,
     this.colors,
     this.sizes,
+    this.oldPrice,
   });
 
   Map<String, dynamic> toMap() {
@@ -32,6 +34,7 @@ class ProductModel {
       'createdAt': createdAt?.toIso8601String(),
       'colors': colors,
       'sizes': sizes,
+      'oldPrice': oldPrice,
     };
   }
 
@@ -48,6 +51,7 @@ class ProductModel {
           : null,
       colors: map['colors'] != null ? List<String>.from(map['colors']) : null,
       sizes: map['sizes'] != null ? List<String>.from(map['sizes']) : null,
+      oldPrice: map['oldPrice'] != null ? (map['oldPrice'] as num).toDouble() : null,
     );
   }
 }

@@ -9,8 +9,8 @@ class ImageCompressionService {
   Future<Uint8List> compress(Uint8List imageBytes) async {
     final originalSizeKb = imageBytes.lengthInBytes / 1024;
 
-    // Compress ONLY if image size > 500 KB.
-    if (originalSizeKb <= 500) {
+    // Compress ONLY if image size > 150 KB to avoid over-compressing tiny icons.
+    if (originalSizeKb <= 150) {
       if (kDebugMode) {
         print('Original size (KB): ${originalSizeKb.toStringAsFixed(2)}');
         print('Compression skipped (true)');
@@ -22,13 +22,14 @@ class ImageCompressionService {
     final stopwatch = Stopwatch()..start();
 
     try {
-      // Compress with 1600x1600 constraints, 82% quality, and strip unnecessary EXIF (keepExif: false)
+      // Compress with 1000x1000 constraints, 80% quality, and WebP format
       final compressedBytes = await FlutterImageCompress.compressWithList(
         imageBytes,
-        minWidth: 1600,
-        minHeight: 1600,
-        quality: 82,
-        keepExif: false, // Discard EXIF to save space, orientation is baked into pixels
+        minWidth: 1000,
+        minHeight: 1000,
+        quality: 80,
+        format: CompressFormat.webp,
+        keepExif: false, // Discard EXIF to save space
       );
 
       stopwatch.stop();

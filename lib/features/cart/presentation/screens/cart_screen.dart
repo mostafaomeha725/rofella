@@ -8,9 +8,11 @@ import 'package:shop/core/widgets/governorate_dropdown.dart';
 import 'package:shop/core/theme/styles.dart';
 import 'package:shop/core/utils/cart_state.dart';
 import 'package:shop/features/cart/presentation/widgets/cart_item_card.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 import 'package:shop/features/cart/data/models/order_model.dart';
 import 'package:shop/features/admin/data/services/firebase_service.dart';
+import 'package:shop/core/utils/url_launcher_util.dart';
+import 'package:shop/features/cart/domain/services/shipping_calculator.dart';
 
 const _maroon = Color(0xFF5C2428);
 const _cream = Color(0xFFF7DEB1);
@@ -28,6 +30,7 @@ class _CartScreenState extends State<CartScreen>
     with SingleTickerProviderStateMixin {
   int quantity = 2;
   bool _showCheckoutForm = false;
+
   String? _selectedGovernorate;
 
   final _nameCtrl = TextEditingController();
@@ -81,14 +84,12 @@ class _CartScreenState extends State<CartScreen>
     // Get cart items and calculate total
     final cartItems = CartState.cartItemsNotifier.value;
     double subTotal = 0;
-    int totalItems = 0;
     String productsDetails = '';
 
     List<OrderItemModel> orderItems = [];
 
     for (var item in cartItems) {
       subTotal += item.totalPrice;
-      totalItems += item.quantity;
       orderItems.add(
         OrderItemModel(
           productId: item.product.id ?? '',
@@ -99,15 +100,12 @@ class _CartScreenState extends State<CartScreen>
         ),
       );
 
-      productsDetails += '▪ ${item.product.name}\n';
-      productsDetails +=
-          '  العدد: ${item.quantity}  |  السعر: ${item.totalPrice.toStringAsFixed(2)} ج.م\n';
-      if (item != cartItems.last) {
-        productsDetails += '  ---------------------------\n';
-      }
+      productsDetails += '\u200F- ${item.product.name} × ${item.quantity} — ${item.totalPrice.toInt().toString()} EGP\n';
     }
 
-    double shippingFee = 50.0;
+    double shippingFee =
+        ShippingCalculator.calculateShippingFee(_selectedGovernorate) ??
+        ShippingCalculator.defaultFee;
     double totalAmount = subTotal + shippingFee;
 
     // Format date and time manually to avoid intl dependency issues
@@ -120,42 +118,34 @@ class _CartScreenState extends State<CartScreen>
     final String formattedTime =
         '${hour12.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')} $amPm';
 
-    // Format WhatsApp message
+    // Format WhatsApp message with Right-To-Left Mark (RLM)
+    final String rlm = '\u200F';
     final String message =
         '''
-=========================
-       *طلب جديد*
-=========================
+$rlm🛒 *طلب جديد*
 
-*[+]* تفاصيل الطلب:
--------------------------
-التاريخ : $formattedDate
-الوقت   : $formattedTime
+$rlm📅 التاريخ: $formattedDate
+$rlm🕐 الوقت: $formattedTime
 
-*[+]* بيانات العميل:
--------------------------
-الاسم     : ${_nameCtrl.text}
-رقم الهاتف: ${_phoneCtrl.text}
-المحافظة  : ${_selectedGovernorate ?? 'غير محدد'}
-العنوان   : ${_addressCtrl.text}
+$rlm👤 *بيانات العميل*
+$rlm- الاسم: ${_nameCtrl.text}
+$rlm- الهاتف: ${_phoneCtrl.text}
+$rlm- المحافظة: ${_selectedGovernorate ?? 'غير محدد'}
+$rlm- العنوان: ${_addressCtrl.text}
 
-*[+]* المنتجات المطلوبة:
--------------------------
+$rlm📦 *المنتجات المطلوبة*
 $productsDetails
--------------------------
-المجموع الفرعي : ${subTotal.toStringAsFixed(2)} ج.م
-مصاريف الشحن : ${shippingFee.toStringAsFixed(2)} ج.م
-=========================
-*الإجمالي الكلي: ${totalAmount.toStringAsFixed(2)} ج.م*
-=========================
-
-_شكراً لاختياركم متجرنا._
+$rlm💰 *الحساب*
+$rlmالمجموع الفرعي: ${subTotal.toInt().toString()} EGP
+$rlmمصاريف الشحن: ${shippingFee.toInt().toString()} EGP
+$rlm*الإجمالي الكلي: ${totalAmount.toInt().toString()} EGP*
 ''';
 
+    debugPrint('--- Final WhatsApp Message (Before URI Encoding) ---');
+    debugPrint(message);
+    debugPrint('----------------------------------------------------');
+
     final String phone = '201005797956';
-    final Uri url = Uri.parse(
-      'https://wa.me/$phone?text=${Uri.encodeComponent(message)}',
-    );
 
     // Save order to Firebase
     showDialog(
@@ -190,16 +180,102 @@ _شكراً لاختياركم متجرنا._
       return;
     }
 
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-
-      if (mounted) {
-        showSuccess('تم إرسال طلبك بنجاح!');
-      }
-    } else {
-      if (mounted) {
-        showError('تعذر فتح واتساب، يرجى التأكد من تثبيت التطبيق');
-      }
+    if (mounted) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (ctx) => Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 450),
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 20.0,
+                  offset: Offset(0.0, 10.0),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF25D366).withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.check_circle_rounded,
+                    color: Color(0xFF25D366),
+                    size: 64,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                const Text(
+                  'تم الطلب بنجاح!',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'تم تسجيل طلبك لدينا بنجاح.\nبرجاء تأكيد الطلب عبر واتساب لضمان سرعة التوصيل.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black54,
+                    height: 1.6,
+                  ),
+                ),
+                const SizedBox(height: 32),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      UrlLauncherUtil.launchWhatsApp(
+                        phone: phone,
+                        message: message,
+                      ).catchError((_) {});
+                      Navigator.pop(ctx);
+                      context.go('/home');
+                    },
+                    icon: const Icon(Icons.chat, color: Colors.white, size: 24),
+                    label: const Text(
+                      'تأكيد الطلب الآن',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF25D366),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      elevation: 0,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
     }
   }
 
@@ -217,67 +293,136 @@ _شكراً لاختياركم متجرنا._
                 0,
                 (sum, item) => sum + item.totalPrice,
               );
-              final int totalItems = cartItems.fold(
-                0,
-                (sum, item) => sum + item.quantity,
-              );
-              final double shippingFee = 50.0;
-              final double totalAmount = subTotal + shippingFee;
+              final double? shippingFee =
+                  ShippingCalculator.calculateShippingFee(_selectedGovernorate);
+              final double totalAmount = subTotal + (shippingFee ?? 0.0);
 
-              return Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 800),
-                  child: Column(
-                    children: [
-                      _buildHeader(context),
-                      Expanded(
-                        child: cartItems.isEmpty
-                            ? _buildEmptyState(context)
-                            : SingleChildScrollView(
-                                controller: _scrollCtrl,
-                                padding: const EdgeInsets.fromLTRB(
-                                  16,
-                                  20,
-                                  16,
-                                  0,
-                                ),
-                                child: Column(
-                                  children: [
-                                    // Build list of CartItemCards
-                                    Column(
-                                      children: cartItems
-                                          .map(
-                                            (item) =>
-                                                CartItemCard(cartItem: item),
-                                          )
-                                          .toList(),
-                                    ),
-
-                                    if (_showCheckoutForm) ...[
-                                      const SizedBox(height: 20),
-                                      FadeTransition(
-                                        opacity: _formAnim,
-                                        child: SizeTransition(
-                                          sizeFactor: _formAnim,
-                                          child: _buildCheckoutForm(),
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  final bool isDesktop = constraints.maxWidth > 900;
+                  
+                  if (isDesktop) {
+                    return Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 1200),
+                        child: Column(
+                          children: [
+                            _buildHeader(context),
+                            Expanded(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Left side (Cart Items)
+                                  Expanded(
+                                    flex: 3,
+                                    child: cartItems.isEmpty
+                                        ? _buildEmptyState(context)
+                                        : SingleChildScrollView(
+                                            controller: _scrollCtrl,
+                                            padding: const EdgeInsets.all(24),
+                                            child: Column(
+                                              children: cartItems
+                                                  .map((item) =>
+                                                      CartItemCard(cartItem: item))
+                                                  .toList(),
+                                            ),
+                                          ),
+                                  ),
+                                  // Right side (Checkout Summary and Form)
+                                  if (cartItems.isNotEmpty)
+                                    Container(
+                                      width: 400,
+                                      padding: const EdgeInsets.only(
+                                          top: 24, bottom: 24, left: 24),
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            _buildBottomBar(
+                                              context,
+                                              subTotal,
+                                              shippingFee,
+                                              totalAmount,
+                                              isDesktop: true,
+                                            ),
+                                            if (_showCheckoutForm) ...[
+                                              const SizedBox(height: 20),
+                                              FadeTransition(
+                                                opacity: _formAnim,
+                                                child: SizeTransition(
+                                                  sizeFactor: _formAnim,
+                                                  child: _buildCheckoutForm(),
+                                                ),
+                                              ),
+                                            ],
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                    const SizedBox(height: 20),
-                                  ],
-                                ),
+                                    ),
+                                ],
                               ),
-                      ),
-                      if (cartItems.isNotEmpty)
-                        _buildBottomBar(
-                          context,
-                          subTotal,
-                          shippingFee,
-                          totalAmount,
+                            ),
+                          ],
                         ),
-                    ],
-                  ),
-                ),
+                      ),
+                    );
+                  }
+
+                  // Mobile / Tablet layout
+                  return Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 800),
+                      child: Column(
+                        children: [
+                          _buildHeader(context),
+                          Expanded(
+                            child: cartItems.isEmpty
+                                ? _buildEmptyState(context)
+                                : SingleChildScrollView(
+                                    controller: _scrollCtrl,
+                                    padding: const EdgeInsets.fromLTRB(
+                                      16,
+                                      20,
+                                      16,
+                                      0,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        // Build list of CartItemCards
+                                        Column(
+                                          children: cartItems
+                                              .map(
+                                                (item) =>
+                                                    CartItemCard(cartItem: item),
+                                              )
+                                              .toList(),
+                                        ),
+                                        if (_showCheckoutForm) ...[
+                                          const SizedBox(height: 20),
+                                          FadeTransition(
+                                            opacity: _formAnim,
+                                            child: SizeTransition(
+                                              sizeFactor: _formAnim,
+                                              child: _buildCheckoutForm(),
+                                            ),
+                                          ),
+                                        ],
+                                        const SizedBox(height: 20),
+                                      ],
+                                    ),
+                                  ),
+                          ),
+                          if (cartItems.isNotEmpty)
+                            _buildBottomBar(
+                              context,
+                              subTotal,
+                              shippingFee,
+                              totalAmount,
+                            ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               );
             },
           ),
@@ -436,6 +581,21 @@ _شكراً لاختياركم متجرنا._
                         ? 'يرجى اختيار المحافظة'
                         : null,
                   ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.local_shipping_outlined,
+                        size: 14,
+                        color: Colors.grey[600],
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        'تكلفة الشحن تُحسب تلقائيًا حسب المحافظة.',
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 12),
                   AppFormField(
                     controller: _addressCtrl,
@@ -458,54 +618,78 @@ _شكراً لاختياركم متجرنا._
   Widget _buildBottomBar(
     BuildContext context,
     double subTotal,
-    double shippingFee,
-    double totalAmount,
-  ) {
+    double? shippingFee,
+    double totalAmount, {
+    bool isDesktop = false,
+  }) {
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+        borderRadius: isDesktop
+            ? BorderRadius.circular(20)
+            : const BorderRadius.vertical(top: Radius.circular(30)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 15,
-            offset: const Offset(0, -5),
+            offset: isDesktop ? const Offset(0, 5) : const Offset(0, -5),
           ),
         ],
       ),
       child: SafeArea(
         top: false,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (isDesktop) ...[
+              Text(
+                'ملخص الطلب',
+                style: font18w700.copyWith(color: Colors.black87),
+              ),
+              const SizedBox(height: 16),
+              const Divider(height: 1),
+              const SizedBox(height: 16),
+            ],
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppText(
+                Text(
                   'المجموع',
                   style: font14w500.copyWith(color: Colors.grey[600]),
                 ),
-                AppText(
-                  '${subTotal.toStringAsFixed(2)} ج.م',
+                Text(
+                  '${subTotal.toInt().toString()} EGP',
                   style: font14w700.copyWith(color: Colors.black87),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppText(
+                Text(
                   'مصاريف الشحن',
                   style: font14w500.copyWith(color: Colors.grey[600]),
                 ),
-                AppText(
-                  '${shippingFee.toStringAsFixed(2)} ج.م',
-                  style: font14w700.copyWith(color: Colors.black87),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    shippingFee != null
+                        ? '${shippingFee.toInt().toString()} EGP'
+                        : 'اختر المحافظة لمعرفة الشحن',
+                    textAlign: TextAlign.end,
+                    style: font14w700.copyWith(
+                      color: shippingFee != null ? Colors.black87 : Colors.red,
+                    ),
+                  ),
                 ),
               ],
             ),
-            const Divider(height: 24),
+            const SizedBox(height: 16),
+            const Divider(height: 1),
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -514,7 +698,7 @@ _شكراً لاختياركم متجرنا._
                   style: font16w600.copyWith(color: Colors.grey[800]),
                 ),
                 AppText(
-                  '${totalAmount.toStringAsFixed(2)} ج.م',
+                  '${totalAmount.toInt().toString()} EGP',
                   style: font22w700.copyWith(color: _maroon),
                 ),
               ],
@@ -554,14 +738,6 @@ _شكراً لاختياركم متجرنا._
                     ),
                   ],
                 ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            GestureDetector(
-              onTap: () => context.pop(),
-              child: AppText(
-                'أو متابعة التسوق ←',
-                style: font14w700.copyWith(color: Colors.blue[600]),
               ),
             ),
           ],

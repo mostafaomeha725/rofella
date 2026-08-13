@@ -6,6 +6,7 @@ import 'package:shop/core/utils/spacing.dart';
 import 'package:shop/core/di/services_locator.dart';
 import 'package:shop/features/search/presentation/manager/search_cubit.dart';
 import 'package:shop/core/widgets/product_card.dart';
+import 'package:shop/core/widgets/responsive_container.dart';
 
 class SearchScreen extends StatefulWidget {
   final String? categoryName;
@@ -19,6 +20,7 @@ class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
   late final SearchCubit _searchCubit;
   final ScrollController _scrollController = ScrollController();
+  bool _showAllResults = false;
 
   @override
   void initState() {
@@ -26,6 +28,9 @@ class _SearchScreenState extends State<SearchScreen> {
     _searchCubit = sl.get<SearchCubit>(param1: widget.categoryName);
 
     _searchController.addListener(() {
+      if (_showAllResults) {
+        setState(() => _showAllResults = false);
+      }
       _searchCubit.searchLocal(_searchController.text);
     });
 
@@ -57,10 +62,16 @@ class _SearchScreenState extends State<SearchScreen> {
       value: _searchCubit,
       child: Scaffold(
         backgroundColor: const Color(0xFFF9FAFB),
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
+        body: NestedScrollView(
+          controller: _scrollController,
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                backgroundColor: Colors.white,
+                elevation: 0,
+                floating: true,
+                snap: true,
+                leading: IconButton(
             icon: const Icon(
               Icons.arrow_back_ios,
               color: Colors.black87,
@@ -83,6 +94,7 @@ class _SearchScreenState extends State<SearchScreen> {
               textInputAction: TextInputAction.search,
               onSubmitted: (value) {
                 if (value.isNotEmpty) {
+                  setState(() => _showAllResults = false);
                   _searchCubit.searchNetwork();
                 }
               },
@@ -116,7 +128,9 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
           actions: [const SizedBox(width: 16)],
-        ),
+              ),
+            ];
+          },
         body: BlocBuilder<SearchCubit, SearchState>(
           builder: (context, state) {
             if (state is SearchInitial) {
@@ -139,9 +153,12 @@ class _SearchScreenState extends State<SearchScreen> {
             }
 
             if (state is SearchLoaded) {
-              final products = state.products;
+              final allProducts = state.products;
+              final displayedProducts = _showAllResults
+                  ? allProducts
+                  : allProducts.take(4).toList();
 
-              if (products.isEmpty) {
+              if (allProducts.isEmpty) {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -158,47 +175,84 @@ class _SearchScreenState extends State<SearchScreen> {
               }
 
               return Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 1200),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: LayoutBuilder(
+                child: ResponsiveContainer(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        LayoutBuilder(
                           builder: (context, constraints) {
                             int crossAxisCount;
+                            double childAspectRatio;
                             if (constraints.maxWidth > 1024) {
-                              crossAxisCount = 5;
-                            } else if (constraints.maxWidth > 768) {
                               crossAxisCount = 4;
+                              childAspectRatio = 0.75; // Wider and taller cards
+                            } else if (constraints.maxWidth > 768) {
+                              crossAxisCount = 3;
+                              childAspectRatio = 0.70;
                             } else {
                               crossAxisCount = 2;
+                              childAspectRatio = 0.60;
                             }
 
                             return GridView.builder(
-                              controller: _scrollController,
-                              padding: const EdgeInsets.all(16),
-                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: crossAxisCount,
+                                childAspectRatio: childAspectRatio,
                                 mainAxisSpacing: 16,
                                 crossAxisSpacing: 16,
-                                childAspectRatio: 0.60,
                               ),
-                              itemCount: products.length,
-                              itemBuilder: (context, index) {
-                                return ProductCard(product: products[index]);
-                              },
+                          itemCount: displayedProducts.length,
+                          itemBuilder: (context, index) {
+                            return ProductCard(
+                              product: displayedProducts[index],
                             );
                           },
-                        ),
-                      ),
-                      if (state.isNetworkLoadingMore)
-                        const Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: CircularProgressIndicator(
-                            color: Color(0xFF9E6566),
+                        );
+                      },
+                    ),
+                        if (!_showAllResults && allProducts.length > 4)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 32.0),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF111111),
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 48,
+                                  vertical: 16,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                elevation: 0,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _showAllResults = true;
+                                });
+                              },
+                              child: const Text(
+                                'View all Results',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                    ],
+                        if (state.isNetworkLoadingMore)
+                          const Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: CircularProgressIndicator(
+                              color: Color(0xFF9E6566),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -206,6 +260,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
             return const SizedBox.shrink();
           },
+        ),
         ),
       ),
     );

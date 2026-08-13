@@ -12,16 +12,19 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: sl<HomeCubit>()..init(),
-      child: const Scaffold(
-        backgroundColor: Color(0xFFF9FAFB),
-        drawer: AppDrawer(),
-        appBar: HomeAppBar(),
+    return Scaffold(
+      backgroundColor: const Color(0xFFF9FAFB),
+      drawer: AppDrawer(),
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            HomeSliverAppBar(),
+          ];
+        },
         body: HomeScreenBody(),
-        floatingActionButton: WhatsappFloatingButton(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       ),
+      floatingActionButton: WhatsappFloatingButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 }

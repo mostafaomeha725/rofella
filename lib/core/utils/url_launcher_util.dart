@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -40,17 +41,46 @@ class UrlLauncherUtil {
     required String phone,
     required String message,
   }) async {
-    final Uri whatsappUri = Uri.parse(
-      "https://wa.me/$phone?text=${Uri.encodeComponent(message)}",
-    );
+    // Format the phone properly (ensure it starts with + if missing, or handle properly)
+    String formattedPhone = phone.startsWith('+') ? phone : '+$phone';
+
+    final String cleanPhone = formattedPhone.replaceAll('+', '');
+    
+    Uri whatsappUri;
+    
+    if (defaultTargetPlatform == TargetPlatform.iOS && !kIsWeb) {
+      whatsappUri = Uri(
+        scheme: 'whatsapp',
+        host: 'send',
+        queryParameters: {
+          'phone': formattedPhone,
+          'text': message,
+        },
+      );
+    } else {
+      whatsappUri = Uri(
+        scheme: 'https',
+        host: 'api.whatsapp.com',
+        path: 'send',
+        queryParameters: {
+          'phone': cleanPhone,
+          'text': message,
+        },
+      );
+    }
 
     bool canLaunchWhatsApp = await canLaunchUrl(whatsappUri);
-    debugPrint('Can launch WhatsApp: $canLaunchWhatsApp'); // Debug line
+    debugPrint('Can launch WhatsApp: $canLaunchWhatsApp');
 
     if (canLaunchWhatsApp) {
       await launchUrl(whatsappUri, mode: LaunchMode.externalApplication);
     } else {
-      throw Exception('Could not launch WhatsApp');
+      // As a final fallback for some devices, try to launch regardless
+      try {
+        await launchUrl(whatsappUri, mode: LaunchMode.externalApplication);
+      } catch (e) {
+        throw Exception('Could not launch WhatsApp');
+      }
     }
   }
 

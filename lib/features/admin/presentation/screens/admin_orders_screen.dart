@@ -3,7 +3,12 @@ import 'package:shop/core/theme/styles.dart';
 import 'package:shop/core/widgets/custom_text.dart';
 import 'package:shop/features/admin/data/services/firebase_service.dart';
 import 'package:shop/features/cart/data/models/order_model.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shop/core/routes/route_paths.dart';
+import 'package:shop/features/admin/presentation/manager/admin_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop/core/di/services_locator.dart';
+import 'package:shop/features/admin/data/services/firebase_service.dart';
 
 enum OrderDateFilter { all, today, thisWeek, thisMonth, custom }
 
@@ -17,10 +22,62 @@ class AdminOrdersScreen extends StatefulWidget {
 }
 
 class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
-  final FirebaseService _firebaseService = FirebaseService();
+  final _firebaseService = sl<FirebaseService>();
   OrderDateFilter _currentDateFilter = OrderDateFilter.all;
   OrderStatusFilter _currentStatusFilter = OrderStatusFilter.all;
   DateTime? _selectedDate;
+  List<OrderModel> _currentFilteredOrders = [];
+
+  Future<void> _deleteFilteredOrders() async {
+    if (_currentFilteredOrders.isEmpty) return;
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('حذف الطلبات المعروضة'),
+        content: Text('هل أنت متأكد من حذف ${_currentFilteredOrders.length} طلب نهائياً؟'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('إلغاء'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('حذف', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+    if (confirm == true) {
+      final ids = _currentFilteredOrders.map((o) => o.id).toList();
+      await _firebaseService.deleteOrders(ids);
+    }
+  }
+
+  Future<void> _deleteAllOrders() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('حذف جميع الطلبات'),
+        content: const Text('هل أنت متأكد من حذف جميع الطلبات في المتجر نهائياً؟ هذا الإجراء لا يمكن التراجع عنه.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('إلغاء'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('حذف الكل', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+    if (confirm == true) {
+      // Fetch all orders directly
+      final snapshot = await FirebaseService().getOrders().first;
+      final ids = snapshot.map((o) => o.id).toList();
+      await _firebaseService.deleteOrders(ids);
+    }
+  }
 
   bool _matchesFilter(OrderModel order) {
     // 1. Status Check
@@ -99,6 +156,28 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
         backgroundColor: Colors.white,
         elevation: 1,
         iconTheme: const IconThemeData(color: Colors.black87),
+        actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.delete_outline, color: Colors.red),
+            onSelected: (value) {
+              if (value == 'delete_filtered') {
+                _deleteFilteredOrders();
+              } else if (value == 'delete_all') {
+                _deleteAllOrders();
+              }
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: 'delete_filtered',
+                child: Text('حذف الطلبات المعروضة'),
+              ),
+              const PopupMenuItem(
+                value: 'delete_all',
+                child: Text('حذف جميع الطلبات', style: TextStyle(color: Colors.red)),
+              ),
+            ],
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -172,13 +251,12 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
 
           // Orders List
           Expanded(
-            child: StreamBuilder<List<OrderModel>>(
-              stream: _firebaseService.getOrders(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+            child: BlocBuilder<AdminCubit, AdminState>(
+              builder: (context, state) {
+                if (state is AdminLoading || state is AdminInitial) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                if (snapshot.hasError) {
+                if (state is AdminError) {
                   return Center(
                     child: AppText(
                       'حدث خطأ في جلب الطلبات',
@@ -187,10 +265,18 @@ class _AdminOrdersScreenState extends State<AdminOrdersScreen> {
                   );
                 }
 
-                final allOrders = snapshot.data ?? [];
-                final filteredOrders = allOrders
+                List<OrderModel> allOrders = [];
+                if (state is AdminOrdersLoaded) {
+                  allOrders = state.orders;
+                }
+                
+                // We use addPostFrameCallback to avoid updating state during build if we were using setState, 
+                // but since it's just a local variable assignment for the AppBar actions to use, doing it here is fine.
+                _currentFilteredOrders = allOrders
                     .where((o) => _matchesFilter(o))
                     .toList();
+
+                final filteredOrders = _currentFilteredOrders;
 
                 if (filteredOrders.isEmpty) {
                   return Center(
@@ -308,9 +394,6 @@ class _OrderCard extends StatefulWidget {
 }
 
 class _OrderCardState extends State<_OrderCard> {
-  bool _isExpanded = false;
-  bool _isUpdating = false;
-
   Color _getStatusColor(String status) {
     if (status == 'OnTheWay') return Colors.blue;
     if (status == 'Delivered') return Colors.green;
@@ -346,280 +429,120 @@ class _OrderCardState extends State<_OrderCard> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: Theme(
-          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-          child: ExpansionTile(
-            onExpansionChanged: (expanded) {
-              setState(() => _isExpanded = expanded);
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              context.push(Routes.adminOrderInvoiceScreen, extra: widget.order);
             },
-            tilePadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
-            ),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AppText(
-                        widget.order.customerName,
-                        style: font16w700.copyWith(color: Colors.black87),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          AppText(
-                            _formatDate(widget.order.createdAt),
-                            style: font12w400.copyWith(color: Colors.grey[600]),
-                          ),
-                          const SizedBox(width: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 2,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText(
+                          widget.order.customerName,
+                          style: font16w700.copyWith(color: Colors.black87),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            AppText(
+                              _formatDate(widget.order.createdAt),
+                              style: font12w400.copyWith(color: Colors.grey[600]),
                             ),
-                            decoration: BoxDecoration(
-                              color: _getStatusColor(
-                                widget.order.status,
-                              ).withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
                                 color: _getStatusColor(
                                   widget.order.status,
-                                ).withValues(alpha: 0.5),
+                                ).withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(4),
+                                border: Border.all(
+                                  color: _getStatusColor(
+                                    widget.order.status,
+                                  ).withValues(alpha: 0.5),
+                                ),
                               ),
-                            ),
-                            child: AppText(
-                              _getStatusLabel(widget.order.status),
-                              style: font12w400.copyWith(
-                                color: _getStatusColor(widget.order.status),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF5C2428).withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: AppText(
-                    '${widget.order.totalAmount.toStringAsFixed(2)} ج.م',
-                    style: font14w700.copyWith(color: const Color(0xFF5C2428)),
-                  ),
-                ),
-              ],
-            ),
-            children: [
-              Container(
-                color: const Color(0xFFF9FAFB),
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildInfoRow(Icons.phone, 'الهاتف:', widget.order.phone),
-                    const SizedBox(height: 8),
-                    _buildInfoRow(
-                      Icons.location_on,
-                      'المحافظة:',
-                      widget.order.governorate,
-                    ),
-                    const SizedBox(height: 8),
-                    _buildInfoRow(Icons.home, 'العنوان:', widget.order.address),
-
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.local_shipping,
-                          size: 18,
-                          color: Colors.grey[600],
-                        ),
-                        const SizedBox(width: 8),
-                        AppText(
-                          'تحديث الحالة:',
-                          style: font14w700.copyWith(color: Colors.grey[700]),
-                        ),
-                        const SizedBox(width: 12),
-                        if (_isUpdating)
-                          const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        else
-                          Expanded(
-                            child: DropdownButtonFormField<String>(
-                              value: widget.order.status,
-                              isExpanded: true,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 8,
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                              ),
-                              items: const [
-                                DropdownMenuItem(
-                                  value: 'Pending',
-                                  child: Text('قيد الانتظار'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'OnTheWay',
-                                  child: Text('في الطريق'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'Delivered',
-                                  child: Text('تم التسليم'),
-                                ),
-                              ],
-                              onChanged: (newStatus) async {
-                                if (newStatus != null &&
-                                    newStatus != widget.order.status) {
-                                  setState(() => _isUpdating = true);
-                                  await FirebaseService().updateOrderStatus(
-                                    widget.order.id,
-                                    newStatus,
-                                  );
-
-                                  // Send WhatsApp Notification
-                                  String message = '';
-                                  if (newStatus == 'OnTheWay') {
-                                    message =
-                                        'مرحباً *${widget.order.customerName}* 👋\n\nيسعدنا إخبارك أن طلبك أصبح الآن 🚚 *في الطريق إليك*!\n\nسيتم التواصل معك قريباً عبر المندوب للتسليم على عنوانك.\n\nشكراً لاختيارك متجرنا! ✨';
-                                  } else if (newStatus == 'Delivered') {
-                                    message =
-                                        'مرحباً *${widget.order.customerName}* 👋\n\nتم 📦 *تسليم* طلبك بنجاح!\n\nنتمنى أن تنال منتجاتنا إعجابك وأن تكون تجربتك معنا مميزة.\n\nنتطلع لرؤيتك مجدداً! ✨';
-                                  }
-
-                                  if (message.isNotEmpty) {
-                                    String phone = widget.order.phone.trim();
-                                    if (phone.startsWith('0')) {
-                                      phone = '2$phone';
-                                    } else if (!phone.startsWith('20') &&
-                                        !phone.startsWith('+')) {
-                                      phone = '20$phone';
-                                    }
-
-                                    final Uri url = Uri.parse(
-                                      'https://wa.me/$phone?text=${Uri.encodeComponent(message)}',
-                                    );
-                                    if (await canLaunchUrl(url)) {
-                                      await launchUrl(
-                                        url,
-                                        mode: LaunchMode.externalApplication,
-                                      );
-                                    }
-                                  }
-
-                                  if (mounted)
-                                    setState(() => _isUpdating = false);
-                                }
-                              },
-                            ),
-                          ),
-                      ],
-                    ),
-
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      child: Divider(color: Color(0xFFEEEEEE), thickness: 1),
-                    ),
-
-                    AppText(
-                      'المنتجات (${widget.order.items.length}):',
-                      style: font14w700.copyWith(color: Colors.black87),
-                    ),
-                    const SizedBox(height: 12),
-                    ...widget.order.items.map((item) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(6),
-                              decoration: BoxDecoration(
-                                color: Colors.blue.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                '${item.quantity}x',
-                                style: const TextStyle(
+                              child: AppText(
+                                _getStatusLabel(widget.order.status),
+                                style: font12w400.copyWith(
+                                  color: _getStatusColor(widget.order.status),
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.blue,
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  AppText(
-                                    item.productName,
-                                    style: font14w400.copyWith(
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                  AppText(
-                                    '${item.price.toStringAsFixed(2)} ج.م للقطعة',
-                                    style: font12w400.copyWith(
-                                      color: Colors.grey[600],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            AppText(
-                              '${item.totalPrice.toStringAsFixed(2)} ج.م',
-                              style: font14w700.copyWith(color: Colors.black87),
                             ),
                           ],
                         ),
-                      );
-                    }),
-                  ],
-                ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF5C2428).withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: AppText(
+                          '${widget.order.totalAmount.toStringAsFixed(2)} EGP',
+                          style: font14w700.copyWith(color: const Color(0xFF5C2428)),
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      IconButton(
+                        icon: const Icon(Icons.delete_outline, color: Colors.red, size: 20),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                        onPressed: () async {
+                          final confirm = await showDialog<bool>(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('حذف الطلب'),
+                              content: const Text('هل أنت متأكد من حذف هذا الطلب نهائياً؟'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, false),
+                                  child: const Text('إلغاء'),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, true),
+                                  child: const Text('حذف', style: TextStyle(color: Colors.red)),
+                                ),
+                              ],
+                            ),
+                          );
+                          if (confirm == true) {
+                            await FirebaseService().deleteOrder(widget.order.id);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildInfoRow(IconData icon, String label, String value) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, size: 18, color: Colors.grey[600]),
-        const SizedBox(width: 8),
-        AppText(label, style: font14w700.copyWith(color: Colors.grey[700])),
-        const SizedBox(width: 8),
-        Expanded(
-          child: AppText(
-            value,
-            style: font14w400.copyWith(color: Colors.black87),
-          ),
-        ),
-      ],
     );
   }
 }

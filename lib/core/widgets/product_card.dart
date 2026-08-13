@@ -93,7 +93,10 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                   const SizedBox(height: 8),
                   PriceWidget(
-                    currentPrice: 'LE ${widget.product.price.toStringAsFixed(2)}',
+                    currentPrice: 'EGP ${widget.product.price.toInt()}',
+                    oldPrice: widget.product.oldPrice != null 
+                        ? 'EGP ${widget.product.oldPrice!.toInt()}'
+                        : null,
                   ),
                   const SizedBox(height: 8),
                   AddToCartButton(product: widget.product, imageKey: _imageKey),
